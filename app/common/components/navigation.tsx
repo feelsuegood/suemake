@@ -144,11 +144,11 @@ export const Navigation = () => {
                         {menu.items?.map((item) => (
                           <NavigationMenuItem
                             key={item.name}
+                            // able to apply conditional class names
                             className={cn(
                               "select-none rounded-md transition-colors focus:bg-accent hover:bg-accent",
-                              item.to === "/products/promote" &&
-                                "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20",
-                              item.to === "/jobs/submit" &&
+                              (item.to === "/products/promote" ||
+                                item.to === "/jobs/submit") &&
                                 "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20",
                             )}
                           >
