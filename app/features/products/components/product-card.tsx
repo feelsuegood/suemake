@@ -5,9 +5,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../../common/components/ui/card";
+} from "~/common/components/ui/card";
 import { ChevronUpIcon, EyeIcon, MessageCircleIcon } from "lucide-react";
-import { Button } from "../../../common/components/ui/button";
+import { Button } from "~/common/components/ui/button";
 
 interface ProductCardProps {
   id: string;
