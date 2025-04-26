@@ -3,6 +3,7 @@ import { ProductCard } from "~/features/products/components/product-card";
 import { Button } from "../components/ui/button";
 import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
+import { Card, CardHeader, CardTitle } from "../components/ui/card";
 
 export const meta: MetaFunction = () => {
   return [
@@ -87,6 +88,41 @@ export default function HomePage() {
             claimed={index % 2 === 0}
           />
         ))}
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Latest Jobs
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            Find your dream job.
+          </p>
+          <Button variant="link" asChild className="text-lg p-0">
+            <Link to="/jobs">Explore all jobs &rarr;</Link>
+          </Button>
+        </div>
+        <Link to="/jobs/jobId">
+          <Card className="bg-transparent transition-colors hover:bg-card/50">
+            <CardHeader>
+              <div className="flex items-center gap-4 mb-8">
+                <img
+                  src="https://github.com/microsoft.png"
+                  alt="Company Logo"
+                  className="size-10 rounded-full"
+                />
+                <div className="space-x-2">
+                  <span className="text-accent-foreground">Microsoft</span>
+                  <span className="text-sm text-muted-foreground">•</span>
+                  <span className="text-sm text-muted-foreground">
+                    12 hours ago
+                  </span>
+                </div>
+              </div>
+
+              <CardTitle>Software Developer</CardTitle>
+            </CardHeader>
+          </Card>
+        </Link>
       </div>
     </div>
   );
