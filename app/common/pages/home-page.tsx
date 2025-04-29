@@ -3,7 +3,12 @@ import { ProductCard } from "~/features/products/components/product-card";
 import { Button } from "../components/ui/button";
 import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
-import { Card, CardHeader, CardTitle } from "../components/ui/card";
+import { JobCard } from '~/features/jobs/components/job-card';
+import { TeamCard } from "~/features/teams/components/team-card";
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
+import { Avatar, AvatarImage } from '../components/ui/avatar';
+import { AvatarFallback } from '@radix-ui/react-avatar';
 
 export const meta: MetaFunction = () => {
   return [
@@ -89,7 +94,7 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Latest Jobs
@@ -101,28 +106,48 @@ export default function HomePage() {
             <Link to="/jobs">Explore all jobs &rarr;</Link>
           </Button>
         </div>
-        <Link to="/jobs/jobId">
-          <Card className="bg-transparent transition-colors hover:bg-card/50">
-            <CardHeader>
-              <div className="flex items-center gap-4 mb-8">
-                <img
-                  src="https://github.com/microsoft.png"
-                  alt="Company Logo"
-                  className="size-10 rounded-full"
-                />
-                <div className="space-x-2">
-                  <span className="text-accent-foreground">Microsoft</span>
-                  <span className="text-sm text-muted-foreground">•</span>
-                  <span className="text-sm text-muted-foreground">
-                    12 hours ago
-                  </span>
-                </div>
-              </div>
-
-              <CardTitle>Software Developer</CardTitle>
-            </CardHeader>
-          </Card>
-        </Link>
+        {Array.from({ length: 11 }).map((_, index) => (
+          <JobCard
+            key={`jobId-${index}`}
+            id={`jobId-${index}`}
+            company="Atlassian"
+            companyLogoUrl="https://github.com/atlassian.png"
+            companyHq="San Francisco, CA"
+            title="Software Developer"
+            postedTime="12 hours ago"
+            type="Full-time"
+            positionLocation="Remote"
+            salary="$10,000 - $12,000"
+          />
+        ))}
+      </div>
+      <div className="grid grid-cols-4 gap-4">
+        <div>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Find a team mate
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            Join a team looking for a new member.
+          </p>
+          <Button variant="link" asChild className="text-lg p-0">
+            <Link to="/teams">Explore all teams &rarr;</Link>
+          </Button>
+        </div>
+        {Array.from({ length: 7 }).map((_, index) => (
+          <TeamCard
+            key={`teamId-${index}`}
+            id={`teamId-${index}`}
+            leaderUsername="feelsuegood"
+            leaderAvatarUrl="https://github.com/feelsuegood.png"
+            positions={[
+            "React Developer",
+            "Backend Developer",
+            "Flutter Developer",
+            "Product Manager"
+            ]}
+            projectDescription="anew social media platform"
+          />
+        ))}
       </div>
     </div>
   );
