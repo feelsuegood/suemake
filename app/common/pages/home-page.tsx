@@ -9,6 +9,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '../com
 import { Badge } from '../components/ui/badge';
 import { Avatar, AvatarImage } from '../components/ui/avatar';
 import { AvatarFallback } from '@radix-ui/react-avatar';
+import { Route } from './+types/home-page';
 
 export const meta: MetaFunction = () => {
   return [
@@ -19,13 +20,26 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function HomePage() {
+// loader: how to fetch data instead of useEffect, useState, reactquery, and etc.
+//  * should export!
+// it runs on server side
+export function loader() {
+  console.log("hello")
+  return {
+    hello: "world",
+    hello2:"jdlkfjsadlf;a"
+  };
+}
+
+// * react-router generated types: Define types by referring to route.ts
+// .react-router/types/app/common/pages/+types/home-page.ts
+export default function HomePage({loaderData}: Route.ComponentProps) {
   return (
     <div className="px-20 space-y-40">
       <div className="grid grid-cols-3 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
-            Today's Products
+            Today's Products {JSON.stringify(loaderData)}
           </h2>
           <p className="text-xl font-light text-foreground">
             The best products made by our community today
