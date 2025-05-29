@@ -1,9 +1,11 @@
 import { DateTime } from "luxon";
 import { Route } from "./+types/daily-leaderboard-page";
-import { data, isRouteErrorResponse } from "react-router";
+import { data, isRouteErrorResponse, Link } from "react-router";
 import { z } from "zod";
 import { Hero } from "~/common/components/hero";
 import { ProductCard } from "../components/product-card";
+import { Button } from "~/common/components/ui/button";
+import ProductPagination from "~/common/components/product-pagination";
 
 const paramsSchema = z.object({
   //* example - what you expect from the params
@@ -54,10 +56,33 @@ export const loader = ({ params }: Route.LoaderArgs) => {
 export default function DailyLeaderboardPage({
   loaderData,
 }: Route.ComponentProps) {
-  const date = DateTime.fromObject(loaderData);
+  const urlDate = DateTime.fromObject(loaderData);
+  const previousDay = urlDate.minus({ days: 1 });
+  const nextDay = urlDate.plus({ days: 1 });
+  const isToday = urlDate.equals(DateTime.now().startOf("day"));
   return (
-    <div>
-      <Hero title={`The best of ${date.toLocaleString(DateTime.DATE_MED)}`} />
+    <div className="space-y-10">
+      <Hero
+        title={`The best of ${urlDate.toLocaleString(DateTime.DATE_MED)}`}
+      />
+      <div className="flex justify-center gap-5 items-center">
+        <Button variant="secondary" asChild>
+          <Link
+            to={`/products/leaderboards/daily/${previousDay.year}/${previousDay.month}/${previousDay.day}`}
+          >
+            &larr;&nbsp; {previousDay.toLocaleString(DateTime.DATE_SHORT)}
+          </Link>
+        </Button>
+        {isToday ? null : (
+          <Button variant="secondary" asChild>
+            <Link
+              to={`/products/leaderboards/daily/${nextDay.year}/${nextDay.month}/${nextDay.day}`}
+            >
+              {nextDay.toLocaleString(DateTime.DATE_SHORT)} &nbsp;&rarr;
+            </Link>
+          </Button>
+        )}
+      </div>
       <div className="space-y-5 w-full max-w-screen-md mx-auto">
         {Array.from({ length: 10 }).map((_, index) => (
           <ProductCard
@@ -71,6 +96,7 @@ export default function DailyLeaderboardPage({
           />
         ))}
       </div>
+      <ProductPagination totalPage={10} />
     </div>
   );
 }
