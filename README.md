@@ -90,8 +90,14 @@ suemake/
 - This project is for non-commercial research and educational purposes only.
 
 
-## Reference
+## Reference 📚
 
 - [Maker Master Class by Nomad Coders](https://nomadcoders.co/maker-masterclass/)
 - [Luxon](https://moment.github.io/luxon/)  *date and time handling*
 - [Zod](https://zod.dev/)  *validate input data*
+
+## Notes 📝
+- # configure only a specific branch to build
+```bash
+if [ "$VERCEL_GIT_BRANCH" != "branch-name" ]; then exit 0; fi
+```
