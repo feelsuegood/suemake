@@ -103,14 +103,14 @@ export default function WeeklyLeaderboardPage({
         </div>
         <div className="flex gap-4">
           <Link
-            to={`/products/leaderboard/weekly/${prevWeek.year}/${prevWeek.week}`}
+            to={`/products/leaderboards/weekly/${prevWeek.year}/${prevWeek.week}`}
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
           >
             &larr; Previous Week
           </Link>
           {!isCurrentOrFutureWeek && (
             <Link
-              to={`/products/leaderboard/weekly/${nextWeek.year}/${nextWeek.week}`}
+              to={`/products/leaderboards/weekly/${nextWeek.year}/${nextWeek.week}`}
               className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
             >
               Next Week &rarr;

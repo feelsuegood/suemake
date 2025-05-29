@@ -40,7 +40,7 @@ export default function HomePage() {
             The best products made by our community today
           </p>
           <Button variant="link" asChild className="text-lg p-0">
-            <Link to="/products/leaderboard">Explore all products &rarr;</Link>
+            <Link to="/products/leaderboards">Explore all products &rarr;</Link>
           </Button>
         </div>
         {Array.from({ length: 10 }).map((_, index) => (

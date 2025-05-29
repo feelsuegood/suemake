@@ -91,14 +91,14 @@ export default function DailyLeaderboardPage({
         </div>
         <div className="flex gap-4">
           <Link
-            to={`/products/leaderboard/daily/${prevDay.year}/${prevDay.month}/${prevDay.day}`}
+            to={`/products/leaderboards/daily/${prevDay.year}/${prevDay.month}/${prevDay.day}`}
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
           >
             &larr; Previous Day
           </Link>
           {!isCurrentOrFutureDay && (
             <Link
-              to={`/products/leaderboard/daily/${nextDay.year}/${nextDay.month}/${nextDay.day}`}
+              to={`/products/leaderboards/daily/${nextDay.year}/${nextDay.month}/${nextDay.day}`}
               className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
             >
               Next Day &rarr;

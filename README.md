@@ -85,10 +85,12 @@ suemake/
 3. Follow commit message guidelines  
 4. Merge after code review
 
-## License 📄
+## License 🏷️
+- CC BY-NC-SA 4.0 (non-commercial research only)
+- This project is for non-commercial research and educational purposes only.
 
-Licensed under MIT. See the [LICENSE](LICENSE) file for details.
 
 ## Reference
 
 - [Maker Master Class by Nomad Coders](https://nomadcoders.co/maker-masterclass/)
+- [Luxon](https://moment.github.io/luxon/)

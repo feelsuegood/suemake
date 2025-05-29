@@ -43,8 +43,8 @@ export default function LeaderboardPage() {
           />
         ))}
         <Button variant="link" asChild className="text-lg self-center">
-          <Link to="/products/leaderboard/daily">
-            Explore all products &rarr;
+          <Link to="/products/leaderboards/daily">
+            Explore all leaderboards &rarr;
           </Link>
         </Button>
       </div>
@@ -69,8 +69,8 @@ export default function LeaderboardPage() {
           />
         ))}
         <Button variant="link" asChild className="text-lg self-center">
-          <Link to="/products/leaderboard/weekly">
-            Explore all products &rarr;
+          <Link to="/products/leaderboards/weekly">
+            Explore all leaderboards &rarr;
           </Link>
         </Button>
       </div>
@@ -95,8 +95,8 @@ export default function LeaderboardPage() {
           />
         ))}
         <Button variant="link" asChild className="text-lg self-center">
-          <Link to="/products/leaderboard/monthly">
-            Explore all products &rarr;
+          <Link to="/products/leaderboards/monthly">
+            Explore all leaderboards &rarr;
           </Link>
         </Button>
       </div>
@@ -121,8 +121,8 @@ export default function LeaderboardPage() {
           />
         ))}
         <Button variant="link" asChild className="text-lg self-center">
-          <Link to="/products/leaderboard/yearly">
-            Explore all products &rarr;
+          <Link to="/products/leaderboards/yearly">
+            Explore all leaderboards &rarr;
           </Link>
         </Button>
       </div>

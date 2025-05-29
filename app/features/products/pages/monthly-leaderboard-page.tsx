@@ -82,7 +82,7 @@ export default function MonthlyLeaderboardPage({
         </div>
         <div className="flex gap-4">
           <Link
-            to={`/products/leaderboard/monthly/${prevMonth.year}/${prevMonth.month}`}
+            to={`/products/leaderboards/monthly/${prevMonth.year}/${prevMonth.month}`}
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
           >
             &larr;{" "}
@@ -93,7 +93,7 @@ export default function MonthlyLeaderboardPage({
           </Link>
           {!isCurrentOrFutureMonth && (
             <Link
-              to={`/products/leaderboard/monthly/${nextMonth.year}/${nextMonth.month}`}
+              to={`/products/leaderboards/monthly/${nextMonth.year}/${nextMonth.month}`}
               className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
             >
               {new Date(nextMonth.year, nextMonth.month - 1).toLocaleString(

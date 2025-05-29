@@ -37,8 +37,8 @@ const menus = [
     items: [
       {
         name: "Leaderboard",
-        description: "See the leaderboard",
-        to: "/products/leaderboard",
+        description: "See the leaderboards",
+        to: "/products/leaderboards",
       },
       {
         name: "Categories",
