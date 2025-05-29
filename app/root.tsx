@@ -10,6 +10,7 @@ import {
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 import { Navigation } from "./common/components/navigation";
+import { Settings } from "luxon";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -30,6 +31,9 @@ export const links: Route.LinksFunction = () => [
 
 // needed to render a existing page or an error page
 export function Layout({ children }: { children: React.ReactNode }) {
+  //* set the default locale and zone for luxon
+  Settings.defaultLocale = "en-AU";
+  Settings.defaultZone = "Australia/Brisbane";
   return (
     <html lang="en">
       <head>

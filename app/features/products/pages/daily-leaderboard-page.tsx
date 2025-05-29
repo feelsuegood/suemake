@@ -2,6 +2,8 @@ import { DateTime } from "luxon";
 import { Route } from "./+types/daily-leaderboard-page";
 import { data, isRouteErrorResponse } from "react-router";
 import { z } from "zod";
+import { Hero } from "~/common/components/hero";
+import { ProductCard } from "../components/product-card";
 
 const paramsSchema = z.object({
   //* example - what you expect from the params
@@ -13,7 +15,7 @@ const paramsSchema = z.object({
   day: z.coerce.number().int().min(1).max(31),
 });
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export const loader = ({ params }: Route.LoaderArgs) => {
   // const { year, month, day } = params;
   const { success, data: parsedData } = paramsSchema.safeParse(params);
   if (!success) {
@@ -32,27 +34,45 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
   // }).setZone("Australia/Brisbane");
   const date = DateTime.fromObject(parsedData).setZone("Australia/Brisbane");
   if (!date.isValid) {
-    // throw new Error("Invalid date");
-    return data(
+    //! wrong: return data
+    throw data(
       { error_code: "invalid_date", message: "Invalid date" },
       { status: 400 },
     );
   }
   const today = DateTime.now().setZone("Australia/Brisbane").startOf("day");
   if (date > today) {
-    return data(
+    throw data(
       { error_code: "future_date", message: "Future date" },
       { status: 400 },
     );
   }
-  return { date };
+  return { ...parsedData };
 };
 
 //* UI
 export default function DailyLeaderboardPage({
   loaderData,
 }: Route.ComponentProps) {
-  return <div className="container py-10"></div>;
+  const date = DateTime.fromObject(loaderData);
+  return (
+    <div>
+      <Hero title={`The best of ${date.toLocaleString(DateTime.DATE_MED)}`} />
+      <div className="space-y-5 w-full max-w-screen-md mx-auto">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <ProductCard
+            key={`productId-${index}`}
+            id={`productId-${index}`}
+            name="Product Name"
+            description="Product Description"
+            commentCount={100}
+            viewCount={100}
+            upvoteCount={100}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 //* Error Handling - this is optional. if it doesn't exist, root error boundary will handle the error
