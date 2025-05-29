@@ -93,4 +93,5 @@ suemake/
 ## Reference
 
 - [Maker Master Class by Nomad Coders](https://nomadcoders.co/maker-masterclass/)
-- [Luxon](https://moment.github.io/luxon/)
+- [Luxon](https://moment.github.io/luxon/)  *date and time handling*
+- [Zod](https://zod.dev/)  *validate input data*
