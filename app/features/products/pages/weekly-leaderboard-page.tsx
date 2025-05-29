@@ -37,7 +37,9 @@ export function loader({ request, params }: Route["LoaderArgs"]) {
   return { products, period: { year, week } };
 }
 
-export default function WeeklyLeaderboardsPage({ loaderData }: Route["ComponentProps"]) {
+export default function WeeklyLeaderboardPage({
+  loaderData,
+}: Route["ComponentProps"]) {
   const { products, period } = loaderData;
 
   if (!products || !period || !period.week) {
@@ -48,13 +50,19 @@ export default function WeeklyLeaderboardsPage({ loaderData }: Route["ComponentP
     const firstDayOfYear = new Date(year, 0, 1);
     const firstWeekDay = firstDayOfYear.getDay();
     const offsetDays = (week - 1) * 7 - firstWeekDay + 1;
-    
+
     const startDate = new Date(year, 0, offsetDays);
     const endDate = new Date(year, 0, offsetDays + 6);
-    
+
     return {
-      start: startDate.toLocaleDateString('default', { month: 'short', day: 'numeric' }),
-      end: endDate.toLocaleDateString('default', { month: 'short', day: 'numeric' }),
+      start: startDate.toLocaleDateString("default", {
+        month: "short",
+        day: "numeric",
+      }),
+      end: endDate.toLocaleDateString("default", {
+        month: "short",
+        day: "numeric",
+      }),
     };
   }
 
@@ -75,10 +83,10 @@ export default function WeeklyLeaderboardsPage({ loaderData }: Route["ComponentP
   const weekRange = getWeekRange(period.year, period.week);
   const prevWeek = getPreviousWeek(period.year, period.week);
   const nextWeek = getNextWeek(period.year, period.week);
-  
+
   const now = new Date();
   const currentWeek = Math.ceil((now.getDate() - now.getDay()) / 7);
-  const isCurrentOrFutureWeek = 
+  const isCurrentOrFutureWeek =
     period.year > now.getFullYear() ||
     (period.year === now.getFullYear() && period.week >= currentWeek);
 
@@ -95,14 +103,14 @@ export default function WeeklyLeaderboardsPage({ loaderData }: Route["ComponentP
         </div>
         <div className="flex gap-4">
           <Link
-            to={`/products/leaderboards/weekly/${prevWeek.year}/${prevWeek.week}`}
+            to={`/products/leaderboard/weekly/${prevWeek.year}/${prevWeek.week}`}
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
           >
             &larr; Previous Week
           </Link>
           {!isCurrentOrFutureWeek && (
             <Link
-              to={`/products/leaderboards/weekly/${nextWeek.year}/${nextWeek.week}`}
+              to={`/products/leaderboard/weekly/${nextWeek.year}/${nextWeek.week}`}
               className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
             >
               Next Week &rarr;
@@ -118,4 +126,4 @@ export default function WeeklyLeaderboardsPage({ loaderData }: Route["ComponentP
       </div>
     </div>
   );
-} 
+}

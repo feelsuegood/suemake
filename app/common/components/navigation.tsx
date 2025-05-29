@@ -25,7 +25,7 @@ import {
   BarChart3Icon,
   BellIcon,
   LogOutIcon,
-  MessageCircleIcon, 
+  MessageCircleIcon,
   SettingsIcon,
   UserIcon,
 } from "lucide-react";
@@ -36,9 +36,9 @@ const menus = [
     to: "/products",
     items: [
       {
-        name: "Leaderboards",
+        name: "Leaderboard",
         description: "See the leaderboard",
-        to: "/products/leaderboards",
+        to: "/products/leaderboard",
       },
       {
         name: "Categories",

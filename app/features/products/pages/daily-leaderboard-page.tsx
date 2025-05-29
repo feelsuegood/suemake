@@ -4,96 +4,104 @@ import { ProductCard } from "../components/product-card";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Monthly Product Rankings | suemake" },
-    { description: "Best products of the month" },
+    { title: "Daily Product Rankings | suemake" },
+    { description: "Best products of the day" },
   ];
 };
 
 export function loader({ request, params }: Route["LoaderArgs"]) {
-  if (!params?.year || !params?.month) {
+  if (!params?.year || !params?.month || !params?.day) {
     const now = new Date();
     return {
       products: [],
       period: {
         year: now.getFullYear(),
         month: now.getMonth() + 1,
+        day: now.getDate(),
       },
     };
   }
 
   const year = parseInt(params.year);
   const month = parseInt(params.month);
+  const day = parseInt(params.day);
 
   const products: Product[] = Array.from({ length: 10 }).map((_, index) => ({
     id: `product-${index}`,
-    name: `Top Product ${index + 1} of ${month}/${year}`,
-    description: "A top-ranked product of the month",
-    commentCount: Math.floor(Math.random() * 5000),
-    viewCount: Math.floor(Math.random() * 50000),
-    upvoteCount: Math.floor(Math.random() * 25000),
+    name: `Top Product ${index + 1} of ${month}/${day}/${year}`,
+    description: "A top-ranked product of the day",
+    commentCount: Math.floor(Math.random() * 1000),
+    viewCount: Math.floor(Math.random() * 10000),
+    upvoteCount: Math.floor(Math.random() * 5000),
   }));
 
-  return { products, period: { year, month } };
+  return { products, period: { year, month, day } };
 }
 
-export default function MonthlyLeaderboardsPage({ loaderData }: Route["ComponentProps"]) {
+export default function DailyLeaderboardPage({
+  loaderData,
+}: Route["ComponentProps"]) {
   const { products, period } = loaderData;
 
-  if (!products || !period || !period.month) {
+  if (!products || !period || !period.day) {
     return <div>No data available</div>;
   }
 
-  const monthName = new Date(period.year, period.month - 1).toLocaleString('default', { month: 'long' });
+  const date = new Date(period.year, period.month ?? 0 - 1, period.day);
+  const formattedDate = date.toLocaleDateString("default", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-  function getPreviousMonth(year: number, month: number) {
-    return month === 1
-      ? { year: year - 1, month: 12 }
-      : { year, month: month - 1 };
+  function getPreviousDay(year: number, month: number, day: number) {
+    const date = new Date(year, month - 1, day);
+    date.setDate(date.getDate() - 1);
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
   }
 
-  function getNextMonth(year: number, month: number) {
-    return month === 12
-      ? { year: year + 1, month: 1 }
-      : { year, month: month + 1 };
+  function getNextDay(year: number, month: number, day: number) {
+    const date = new Date(year, month - 1, day);
+    date.setDate(date.getDate() + 1);
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
   }
 
-  const prevMonth = getPreviousMonth(period.year, period.month);
-  const nextMonth = getNextMonth(period.year, period.month);
+  const prevDay = getPreviousDay(period.year, period.month ?? 0, period.day);
+  const nextDay = getNextDay(period.year, period.month ?? 0, period.day);
   const now = new Date();
-  const isCurrentOrFutureMonth = 
-    period.year > now.getFullYear() ||
-    (period.year === now.getFullYear() && period.month >= now.getMonth() + 1);
+  const isCurrentOrFutureDay = date >= now;
 
   return (
     <div className="container py-10">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-4xl font-bold mb-2">
-            Best of {monthName} {period.year}
-          </h1>
+          <h1 className="text-4xl font-bold mb-2">Best of {formattedDate}</h1>
           <p className="text-lg text-muted-foreground">
-            Top products of the month
+            Top products of the day
           </p>
         </div>
         <div className="flex gap-4">
           <Link
-            to={`/products/leaderboards/monthly/${prevMonth.year}/${prevMonth.month}`}
+            to={`/products/leaderboard/daily/${prevDay.year}/${prevDay.month}/${prevDay.day}`}
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
           >
-            &larr; {new Date(prevMonth.year, prevMonth.month - 1).toLocaleString(
-              'default',
-              { month: 'short' }
-            )}
+            &larr; Previous Day
           </Link>
-          {!isCurrentOrFutureMonth && (
+          {!isCurrentOrFutureDay && (
             <Link
-              to={`/products/leaderboards/monthly/${nextMonth.year}/${nextMonth.month}`}
+              to={`/products/leaderboard/daily/${nextDay.year}/${nextDay.month}/${nextDay.day}`}
               className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
             >
-              {new Date(nextMonth.year, nextMonth.month - 1).toLocaleString(
-                'default',
-                { month: 'short' }
-              )} &rarr;
+              Next Day &rarr;
             </Link>
           )}
         </div>
@@ -106,4 +114,4 @@ export default function MonthlyLeaderboardsPage({ loaderData }: Route["Component
       </div>
     </div>
   );
-} 
+}

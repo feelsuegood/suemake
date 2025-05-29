@@ -1,4 +1,4 @@
-import { type RouteConfig, index, prefix, route } from "@react-router/dev/routes";
+import { type RouteConfig, index, prefix, route } from "@react-router/dev/routes"; 
 
 export default [
     index("common/pages/home-page.tsx"), 
@@ -7,12 +7,13 @@ export default [
             // index in prefix means "/products"
             index("features/products/pages/products-page.tsx"),
             ...prefix("leaderboards", [
-                // products/leaderbords => leaderboards-page.tsx
-                index("features/products/pages/leaderboards-page.tsx"),
-                route("/yearly/:year", "features/products/pages/yearly-leaderboards-page.tsx"), 
-                route("/monthly/:year/:month", "features/products/pages/monthly-leaderboards-page.tsx"), 
-                route("/daily/:year/:month/:day", "features/products/pages/daily-leaderboards-page.tsx"), 
-                route("/weekly/:year/:week", "features/products/pages/weekly-leaderboards-page.tsx"), 
+                // products/leaderboard => leaderboard-page.tsx
+                index("features/products/pages/leaderboard-page.tsx"),
+                route("/yearly/:year", "features/products/pages/yearly-leaderboard-page.tsx"), 
+                route("/monthly/:year/:month", "features/products/pages/monthly-leaderboard-page.tsx"), 
+                route("/daily/:year/:month/:day", "features/products/pages/daily-leaderboard-page.tsx"), 
+                route("/weekly/:year/:week", "features/products/pages/weekly-leaderboard-page.tsx"), 
+                route("/:period", "features/products/pages/leaderboards-redirection-page.tsx"),
             ]),
             ...prefix("categories", [
                 // products/categories => categories-page.tsx
