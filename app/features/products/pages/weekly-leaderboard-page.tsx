@@ -1,129 +1,118 @@
-import { Link, MetaFunction } from "react-router";
-import type { Route, Product } from "../+types";
+import { DateTime } from "luxon";
+import { Route } from "./+types/weekly-leaderboard-page";
+import { data, isRouteErrorResponse, Link } from "react-router";
+import { z } from "zod";
+import { Hero } from "~/common/components/hero";
 import { ProductCard } from "../components/product-card";
+import { Button } from "~/common/components/ui/button";
+import ProductPagination from "~/common/components/product-pagination";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Weekly Product Rankings | suemake" },
-    { description: "Best products of the week" },
-  ];
+const paramsSchema = z.object({
+  year: z.coerce.number(),
+  week: z.coerce.number(),
+});
+
+export const loader = ({ params }: Route.LoaderArgs) => {
+  const { success, data: parsedData } = paramsSchema.safeParse(params);
+  if (!success) {
+    throw data(
+      {
+        error_code: "invalid_params",
+        message: "Invalid params",
+      },
+      { status: 400 },
+    );
+  }
+  const date = DateTime.fromObject({
+    weekYear: parsedData.year,
+    weekNumber: parsedData.week,
+  }).setZone("Australia/Brisbane");
+  if (!date.isValid) {
+    throw data(
+      { error_code: "invalid_date", message: "Invalid date" },
+      { status: 400 },
+    );
+  }
+  const today = DateTime.now().setZone("Australia/Brisbane").startOf("day");
+  if (date > today) {
+    throw data(
+      { error_code: "future_date", message: "Future date" },
+      { status: 400 },
+    );
+  }
+  return { ...parsedData };
 };
 
-export function loader({ request, params }: Route["LoaderArgs"]) {
-  if (!params?.year || !params?.week) {
-    const now = new Date();
-    const currentWeek = Math.ceil((now.getDate() - now.getDay()) / 7);
-    return {
-      products: [],
-      period: {
-        year: now.getFullYear(),
-        week: currentWeek,
-      },
-    };
-  }
-
-  const year = parseInt(params.year);
-  const week = parseInt(params.week);
-
-  const products: Product[] = Array.from({ length: 10 }).map((_, index) => ({
-    id: `product-${index}`,
-    name: `Top Product ${index + 1} of Week ${week}, ${year}`,
-    description: "A top-ranked product of the week",
-    commentCount: Math.floor(Math.random() * 2000),
-    viewCount: Math.floor(Math.random() * 20000),
-    upvoteCount: Math.floor(Math.random() * 10000),
-  }));
-
-  return { products, period: { year, week } };
-}
-
+//* UI
 export default function WeeklyLeaderboardPage({
   loaderData,
-}: Route["ComponentProps"]) {
-  const { products, period } = loaderData;
-
-  if (!products || !period || !period.week) {
-    return <div>No data available</div>;
-  }
-
-  function getWeekRange(year: number, week: number) {
-    const firstDayOfYear = new Date(year, 0, 1);
-    const firstWeekDay = firstDayOfYear.getDay();
-    const offsetDays = (week - 1) * 7 - firstWeekDay + 1;
-
-    const startDate = new Date(year, 0, offsetDays);
-    const endDate = new Date(year, 0, offsetDays + 6);
-
-    return {
-      start: startDate.toLocaleDateString("default", {
-        month: "short",
-        day: "numeric",
-      }),
-      end: endDate.toLocaleDateString("default", {
-        month: "short",
-        day: "numeric",
-      }),
-    };
-  }
-
-  function getPreviousWeek(year: number, week: number) {
-    if (week === 1) {
-      return { year: year - 1, week: 52 };
-    }
-    return { year, week: week - 1 };
-  }
-
-  function getNextWeek(year: number, week: number) {
-    if (week === 52) {
-      return { year: year + 1, week: 1 };
-    }
-    return { year, week: week + 1 };
-  }
-
-  const weekRange = getWeekRange(period.year, period.week);
-  const prevWeek = getPreviousWeek(period.year, period.week);
-  const nextWeek = getNextWeek(period.year, period.week);
-
-  const now = new Date();
-  const currentWeek = Math.ceil((now.getDate() - now.getDay()) / 7);
-  const isCurrentOrFutureWeek =
-    period.year > now.getFullYear() ||
-    (period.year === now.getFullYear() && period.week >= currentWeek);
-
+}: Route.ComponentProps) {
+  const urlDate = DateTime.fromObject({
+    weekYear: loaderData.year,
+    weekNumber: loaderData.week,
+  });
+  const previousWeek = urlDate.minus({ weeks: 1 });
+  const nextWeek = urlDate.plus({ weeks: 1 });
+  const isToday = urlDate.equals(DateTime.now().startOf("week"));
   return (
-    <div className="container py-10">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-4xl font-bold mb-2">
-            Week {period.week}, {period.year}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {weekRange.start} - {weekRange.end}
-          </p>
-        </div>
-        <div className="flex gap-4">
+    <div className="space-y-10">
+      <Hero
+        title={`The best of week ${urlDate
+          .startOf("week")
+          .toLocaleString(DateTime.DATE_SHORT)} - ${urlDate
+          .endOf("week")
+          .toLocaleString(DateTime.DATE_SHORT)}`}
+      />
+      <div className="flex justify-center gap-5 items-center">
+        <Button variant="secondary" asChild>
           <Link
-            to={`/products/leaderboards/weekly/${prevWeek.year}/${prevWeek.week}`}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+            to={`/products/leaderboards/weekly/${previousWeek.year}/${previousWeek.weekNumber}`}
           >
-            &larr; Previous Week
+            &larr;&nbsp; {previousWeek.toLocaleString(DateTime.DATE_SHORT)}
           </Link>
-          {!isCurrentOrFutureWeek && (
+        </Button>
+        {isToday ? null : (
+          <Button variant="secondary" asChild>
             <Link
-              to={`/products/leaderboards/weekly/${nextWeek.year}/${nextWeek.week}`}
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+              to={`/products/leaderboards/weekly/${nextWeek.year}/${nextWeek.weekNumber}`}
             >
-              Next Week &rarr;
+              {nextWeek.toLocaleString(DateTime.DATE_SHORT)} &nbsp;&rarr;
             </Link>
-          )}
-        </div>
+          </Button>
+        )}
       </div>
-
-      <div className="grid grid-cols-3 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+      <div className="space-y-5 w-full max-w-screen-md mx-auto">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <ProductCard
+            key={`productId-${index}`}
+            id={`productId-${index}`}
+            name="Product Name"
+            description="Product Description"
+            commentCount={100}
+            viewCount={100}
+            upvoteCount={100}
+          />
         ))}
       </div>
+      <ProductPagination totalPage={10} />
     </div>
   );
+}
+
+//* Error Handling - this is optional. if it doesn't exist, root error boundary will handle the error
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  // console.log("😱", error);
+  //* error from loader
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        {error.data.message} / {error.data.error_code}
+      </div>
+    );
+  }
+  //* error from Error class
+  if (error instanceof Error) {
+    return <div>{error.message}</div>;
+  }
+  return <div>Unknown Error</div>;
 }

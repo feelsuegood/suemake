@@ -95,6 +95,7 @@ suemake/
 - [Maker Master Class by Nomad Coders](https://nomadcoders.co/maker-masterclass/)
 - [Luxon](https://moment.github.io/luxon/)  *date and time handling*
 - [Zod](https://zod.dev/)  *validate input data*
+- [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#examples)
 
 ## Notes 📝
 - # configure only a specific branch to build

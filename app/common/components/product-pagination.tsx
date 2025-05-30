@@ -18,7 +18,8 @@ export default function ProductPagination({
 }: ProductPaginationProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   //   console.log(searchParams);
-  const page = Number(searchParams.get("page")) ?? 1;
+  //! because of Number it returns NaN if the page is not a number so put ?? 1 inside of Number()
+  const page = Number(searchParams.get("page") ?? 1);
   if (isNaN(page) || page < 1) {
     return null;
   }

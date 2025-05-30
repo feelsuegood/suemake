@@ -12,9 +12,9 @@ const paramsSchema = z.object({
   // name: z.string().min(10),
   // email: z.string().email(),
   // coerce: convert string to number
-  year: z.coerce.number().int().min(1900).max(2100),
-  month: z.coerce.number().int().min(1).max(12),
-  day: z.coerce.number().int().min(1).max(31),
+  year: z.coerce.number(),
+  month: z.coerce.number(),
+  day: z.coerce.number(),
 });
 
 export const loader = ({ params }: Route.LoaderArgs) => {

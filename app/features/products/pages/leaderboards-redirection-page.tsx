@@ -9,7 +9,7 @@ export function loader({ params, request, context }: Route.LoaderArgs) {
   const today = DateTime.now().setZone("Australia/Brisbane");
   if (period === "daily") {
     url = `/products/leaderboards/daily/${today.year}/${today.month}/${today.day}`;
-  } else if (period === "weekily") {
+  } else if (period === "weekly") {
     url = `/products/leaderboards/weekly/${today.year}/${today.weekNumber}`;
   } else if (period === "monthly") {
     url = `/products/leaderboards/monthly/${today.year}/${today.month}`;

@@ -1,70 +1,116 @@
-import { Link, MetaFunction } from "react-router";
-import type { Route, Product } from "../+types";
+import { DateTime } from "luxon";
+import { Route } from "./+types/yearly-leaderboard-page";
+import { data, isRouteErrorResponse, Link } from "react-router";
+import { z } from "zod";
+import { Hero } from "~/common/components/hero";
 import { ProductCard } from "../components/product-card";
+import { Button } from "~/common/components/ui/button";
+import ProductPagination from "~/common/components/product-pagination";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Yearly Product Rankings | suemake" },
-    { description: "Best products of the year" },
-  ];
+const paramsSchema = z.object({
+  year: z.coerce.number(),
+});
+
+export const loader = ({ params }: Route.LoaderArgs) => {
+  const { success, data: parsedData } = paramsSchema.safeParse(params);
+  if (!success) {
+    throw data(
+      {
+        error_code: "invalid_params",
+        message: "Invalid params",
+      },
+      { status: 400 },
+    );
+  }
+  const date = DateTime.fromObject({
+    year: parsedData.year,
+  }).setZone("Australia/Brisbane");
+  if (!date.isValid) {
+    throw data(
+      { error_code: "invalid_date", message: "Invalid date" },
+      { status: 400 },
+    );
+  }
+  const today = DateTime.now().setZone("Australia/Brisbane").startOf("year");
+  if (date > today) {
+    throw data(
+      { error_code: "future_date", message: "Future date" },
+      { status: 400 },
+    );
+  }
+  return { ...parsedData };
 };
 
-export function loader({ request, params }: Route["LoaderArgs"]) {
-  const year = parseInt(params?.year || new Date().getFullYear().toString());
-
-  const products: Product[] = Array.from({ length: 10 }).map((_, index) => ({
-    id: `product-${index}`,
-    name: `Top Product ${index + 1} of ${year}`,
-    description: "A top-ranked product of the year",
-    commentCount: Math.floor(Math.random() * 10000),
-    viewCount: Math.floor(Math.random() * 100000),
-    upvoteCount: Math.floor(Math.random() * 50000),
-  }));
-
-  return { products, period: { year } };
-}
-
+//* UI
 export default function YearlyLeaderboardPage({
   loaderData,
-}: Route["ComponentProps"]) {
-  const { products, period } = loaderData;
-
-  if (!products || !period) {
-    return <div>No data available</div>;
-  }
-
+}: Route.ComponentProps) {
+  const urlDate = DateTime.fromObject({
+    year: loaderData.year,
+  });
+  const previousYear = urlDate.minus({ years: 1 });
+  const nextYear = urlDate.plus({ years: 1 });
+  const isToday = urlDate.equals(DateTime.now().startOf("year"));
   return (
-    <div className="container py-10">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-4xl font-bold mb-2">Best of {period.year}</h1>
-          <p className="text-lg text-muted-foreground">
-            Top products of the year
-          </p>
-        </div>
-        <div className="flex gap-4">
-          <Link
-            to={`/products/leaderboards/yearly/${period.year - 1}`}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-          >
-            &larr; {period.year - 1}
+    <div className="space-y-10">
+      <Hero
+        title={`The Best of ${urlDate.toLocaleString({
+          year: "numeric",
+        })}`}
+      />
+      <div className="flex justify-center gap-5 items-center">
+        <Button variant="secondary" asChild>
+          <Link to={`/products/leaderboards/yearly/${previousYear.year}`}>
+            &larr;&nbsp;
+            {previousYear.toLocaleString({
+              year: "numeric",
+            })}
           </Link>
-          {period.year < new Date().getFullYear() && (
-            <Link
-              to={`/products/leaderboards/yearly/${period.year + 1}`}
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-            >
-              {period.year + 1} &rarr;
+        </Button>
+        {/* option: make a button disabled if it's today */}
+        {isToday ? null : (
+          <Button variant="secondary" asChild>
+            <Link to={`/products/leaderboards/yearly/${nextYear.year}`}>
+              {nextYear.toLocaleString({
+                year: "numeric",
+              })}
+              &nbsp;&rarr;
             </Link>
-          )}
-        </div>
+          </Button>
+        )}
       </div>
-
-      <div className="grid grid-cols-3 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+      <div className="space-y-5 w-full max-w-screen-md mx-auto">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <ProductCard
+            key={`productId-${index}`}
+            id={`productId-${index}`}
+            name="Product Name"
+            description="Product Description"
+            commentCount={100}
+            viewCount={100}
+            upvoteCount={100}
+          />
         ))}
       </div>
+      <ProductPagination totalPage={10} />
     </div>
   );
+}
+
+//* Error Handling - this is optional. if it doesn't exist, root error boundary will handle the error
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  // console.log("😱", error);
+  //* error from loader
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        {error.data.message} / {error.data.error_code}
+      </div>
+    );
+  }
+  //* error from Error class
+  if (error instanceof Error) {
+    return <div>{error.message}</div>;
+  }
+  return <div>Unknown Error</div>;
 }
