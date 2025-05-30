@@ -1,71 +1,40 @@
-import { Link, MetaFunction } from "react-router";
-import type { Route, Product, Category } from "../+types";
+import { Hero } from "~/common/components/hero";
+import { Route } from "./+types/category-page";
 import { ProductCard } from "../components/product-card";
+import ProductPagination from "~/common/components/product-pagination";
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = ({ params }) => {
   return [
-    { title: "Category Products | suemake" },
-    { description: "Browse products in this category" },
+    { title: `Developer Tools | suemake` },
+    {
+      name: "description",
+      content: `Browse Developer Tools products`,
+    },
   ];
 };
 
-export function loader({ request, params }: Route["LoaderArgs"]) {
-  if (!params?.category) {
-    return { products: [], category: null };
-  }
-
-  const category: Category = {
-    id: params.category,
-    name: params.category
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" "),
-    description: `Discover amazing ${params.category
-      .split("-")
-      .join(" ")} products`,
-    productCount: 50,
-  };
-
-  const products: Product[] = Array.from({ length: 9 }).map((_, index) => ({
-    id: `${category.id}-product-${index}`,
-    name: `${category.name} Product ${index + 1}`,
-    description: `A great product in the ${category.name} category`,
-    commentCount: Math.floor(Math.random() * 1000),
-    viewCount: Math.floor(Math.random() * 10000),
-    upvoteCount: Math.floor(Math.random() * 5000),
-  }));
-
-  return { products, category };
-}
-
-export default function CategoryPage({ loaderData }: Route["ComponentProps"]) {
-  const { products, category } = loaderData;
-
-  if (!products || !category) {
-    return <div>Category not found</div>;
-  }
-
+export default function CategoryPage() {
   return (
-    <div className="container py-10">
-      <div className="mb-8">
-        <div className="flex items-center gap-2 text-muted-foreground mb-4">
-          <Link to="/products/categories" className="hover:text-foreground">
-            Categories
-          </Link>
-          <span>/</span>
-          <span>{category.name}</span>
-        </div>
-        <h1 className="text-4xl font-bold mb-2">{category.name}</h1>
-        <p className="text-lg text-muted-foreground">
-          {category.description}
-        </p>
-      </div>
+    <div className="space-y-20">
+      <Hero
+        title={`Developer Tools`}
+        subtitle={`Tools for developers to build their products`}
+      />
 
-      <div className="grid grid-cols-3 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+      <div className="space-y-5 w-full max-w-screen-md mx-auto">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <ProductCard
+            key={`productId-${index}`}
+            id={`productId-${index}`}
+            name="Product Name"
+            description="Product Description"
+            commentCount={100}
+            viewCount={100}
+            upvoteCount={100}
+          />
         ))}
       </div>
+      <ProductPagination totalPage={10} />
     </div>
   );
-} 
+}
