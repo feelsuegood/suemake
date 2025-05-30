@@ -1,81 +1,77 @@
-import { Link, MetaFunction } from "react-router";
-import type { Route, Product } from "../+types";
+import { Hero } from "~/common/components/hero";
+import { Route } from "./+types/search-page";
+import z from "zod";
 import { ProductCard } from "../components/product-card";
+import ProductPagination from "~/common/components/product-pagination";
+import { Form } from "react-router";
+import { Input } from "~/common/components/ui/input";
+import { Button } from "~/common/components/ui/button";
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = ({ params }) => {
   return [
     { title: "Search Products | suemake" },
-    { description: "Search for products" },
+    { name: "description", content: "Search for products" },
   ];
 };
 
-export function loader({ request }: Route["LoaderArgs"]) {
+//* validate input
+const paramsSchema = z.object({
+  query: z.string().optional().default(""),
+  //TODO: every leaderbord page needs this config
+  page: z.coerce.number().optional().default(1),
+});
+
+// params comes from the url, query comes from the request
+export function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const query = url.searchParams.get("q") || "";
-
-  if (!query) {
-    return { products: [], query };
+  // console.log(url);
+  //*url.searchParams is like an instance of class
+  // console.log(Object.fromEntries(url.searchParams), url.searchParams);
+  const { success, data: parsedData } = paramsSchema.safeParse(
+    Object.fromEntries(url.searchParams),
+  );
+  if (!success) {
+    //* throw data: customization error
+    // throw data(
+    //   { error_code: "invalid_params", message: "Invalid params" },
+    //   { status: 400 },
+    // );
+    throw new Error("Invalid params");
   }
-
-  const products: Product[] = Array.from({ length: 6 }).map((_, index) => ({
-    id: `search-${index}`,
-    name: `${query} Product ${index + 1}`,
-    description: `A product matching your search for "${query}"`,
-    commentCount: Math.floor(Math.random() * 1000),
-    viewCount: Math.floor(Math.random() * 10000),
-    upvoteCount: Math.floor(Math.random() * 5000),
-  }));
-
-  return { products, query };
+  //database search
+  // console.log(parsedData);
 }
 
-export default function SearchPage({ loaderData }: Route["ComponentProps"]) {
-  const { products, query } = loaderData;
-
+export default function SearchPage({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="container py-10">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Search Results</h1>
-        {query ? (
-          <p className="text-lg text-muted-foreground">
-            Showing results for "{query}"
-          </p>
-        ) : (
-          <p className="text-lg text-muted-foreground">
-            Enter a search term to find products
-          </p>
-        )}
-      </div>
-
-      <form className="mb-8">
-        <div className="flex gap-4">
-          <input
-            type="search"
-            name="q"
-            defaultValue={query}
-            placeholder="Search products..."
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    <div className="space-y-20">
+      <Hero
+        title="Search"
+        subtitle="Search for products by title or description"
+      />
+      {/* <form></form> is from html, Form is from react-router */}
+      <Form className="flex justify-center max-w-screen-sm items-center mx-auto gap-2">
+        <Input
+          name="query"
+          placeholder="Search for products"
+          className="text-lg"
+        />
+        <Button type="submit">Search</Button>
+      </Form>
+      <div className="space-y-5 w-full max-w-screen-md mx-auto">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <ProductCard
+            key={`productId-${index}`}
+            id={`productId-${index}`}
+            name="Product Name"
+            description="Product Description"
+            commentCount={100}
+            viewCount={100}
+            upvoteCount={100}
           />
-          <button
-            type="submit"
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-          >
-            Search
-          </button>
-        </div>
-      </form>
-
-      {products && products.length > 0 ? (
-        <div className="grid grid-cols-3 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
-        </div>
-      ) : query ? (
-        <p className="text-center text-muted-foreground">
-          No products found for "{query}"
-        </p>
-      ) : null}
+        ))}
+      </div>
+      <ProductPagination totalPage={10} />
     </div>
   );
-} 
+}
