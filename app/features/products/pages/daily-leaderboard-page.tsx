@@ -17,6 +17,25 @@ const paramsSchema = z.object({
   day: z.coerce.number(),
 });
 
+//* meta function also get params
+//* data is the data returned from the loader
+export const meta: Route.MetaFunction = ({ params, data }) => {
+  const date = DateTime.fromObject({
+    year: Number(params.year),
+    month: Number(params.month),
+    day: Number(params.day),
+  })
+    .setZone("Australia/Brisbane")
+    .setLocale("en-AU");
+  return [
+    {
+      title: `The Best products of ${date.toLocaleString(
+        DateTime.DATE_MED,
+      )} | suemake`,
+    },
+  ];
+};
+
 export const loader = ({ params }: Route.LoaderArgs) => {
   // const { year, month, day } = params;
   const { success, data: parsedData } = paramsSchema.safeParse(params);
