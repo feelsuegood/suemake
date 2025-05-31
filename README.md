@@ -76,19 +76,11 @@ suemake/
 - Define types via TypeScript interfaces  
 - Utilize Tailwind CSS utility classes  
 - Prefer importing Shadcn UI components  
-- Use `loader`/`action`/`meta` functions (React Router)
-
-## Contributing 🤝
-
-1. Open an issue or submit a Pull Request  
-2. Create a feature branch: `feature/{your-feature}`  
-3. Follow commit message guidelines  
-4. Merge after code review
 
 ## License 🏷️
+
 - CC BY-NC-SA 4.0 (non-commercial research only)
 - This project is for non-commercial research and educational purposes only.
-
 
 ## Reference 📚
 
@@ -96,6 +88,7 @@ suemake/
 - [Luxon](https://moment.github.io/luxon/)  *date and time handling*
 - [Zod](https://zod.dev/)  *validate input data*
 - [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#examples)
+- [React DayPicker](https://daypicker.dev/) *date picker*
 
 ## Notes 📝
 - # configure only a specific branch to build

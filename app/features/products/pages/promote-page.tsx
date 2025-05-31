@@ -1,106 +1,82 @@
-import { Link, MetaFunction } from "react-router";
-import type { Route } from "../+types";
+import { Hero } from "~/common/components/hero";
+import { Route } from "./+types/promote-page";
+import { Form } from "react-router";
+import SelectPair from "~/common/components/select-pair";
+import { Calendar } from "~/common/components/ui/calendar";
+import { Label } from "~/common/components/ui/label";
+import { useState } from "react";
+import { DateRange } from "react-day-picker";
+import { DateTime } from "luxon";
+import { Button } from "~/common/components/ui/button";
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Promote Your Product | suemake" },
-    { description: "Promote your product to reach more users" },
+    {
+      name: "description",
+      content: "Promote your product to reach more users",
+    },
   ];
 };
 
 export default function PromotePage() {
-  const plans = [
-    {
-      name: "Basic",
-      price: "$29",
-      description: "Essential promotion for your product",
-      features: [
-        "Featured for 24 hours",
-        "Top of search results",
-        "Social media share",
-        "Analytics dashboard",
-      ],
-    },
-    {
-      name: "Pro",
-      price: "$99",
-      description: "Advanced promotion with extra visibility",
-      features: [
-        "Featured for 7 days",
-        "Priority in search results",
-        "Social media campaign",
-        "Detailed analytics",
-        "Email newsletter feature",
-        "Custom landing page",
-      ],
-    },
-    {
-      name: "Enterprise",
-      price: "$299",
-      description: "Maximum exposure for your product",
-      features: [
-        "Featured for 30 days",
-        "Premium search placement",
-        "Full marketing campaign",
-        "Advanced analytics",
-        "Newsletter spotlight",
-        "Custom landing page",
-        "Direct user outreach",
-        "Dedicated support",
-      ],
-    },
-  ];
-
+  const [promotionPeriod, setPromotionPeriod] = useState<
+    DateRange | undefined
+  >();
+  const totalDays =
+    promotionPeriod?.from && promotionPeriod?.to
+      ? DateTime.fromJSDate(promotionPeriod.to).diff(
+          DateTime.fromJSDate(promotionPeriod.from),
+          "days",
+        ).days
+      : 0;
   return (
-    <div className="container py-10">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Promote Your Product</h1>
-        <p className="text-lg text-muted-foreground">
-          Choose a promotion plan to increase your product's visibility
-        </p>
-      </div>
-
-      <div className="grid grid-cols-3 gap-8">
-        {plans.map((plan) => (
-          <div
-            key={plan.name}
-            className="rounded-lg border bg-card text-card-foreground shadow-sm"
-          >
-            <div className="p-6 space-y-4">
-              <h3 className="text-2xl font-bold">{plan.name}</h3>
-              <p className="text-4xl font-bold">{plan.price}</p>
-              <p className="text-sm text-muted-foreground">
-                {plan.description}
-              </p>
-            </div>
-            <div className="p-6 border-t">
-              <ul className="space-y-2">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center">
-                    <svg
-                      className="mr-2 h-4 w-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M20 6L9 17l-5-5" />
-                    </svg>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <button
-                className="mt-6 w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-              >
-                Choose {plan.name}
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div>
+      <Hero
+        title="Promote Your Product"
+        subtitle="Promote your product to reach more users"
+      />
+      <Form className="max-w-sm mx-auto flex flex-col gap-10 items-center">
+        <SelectPair
+          label="Select a product"
+          description="Select a product to promote"
+          name="product"
+          required
+          placeholder="Select a product"
+          options={[
+            {
+              label: "AI Dark Mode",
+              value: "ai-dark-mode",
+            },
+            {
+              label: "AI Dark Mode",
+              value: "ai-dark-mode-1",
+            },
+            {
+              label: "AI Dark Mode",
+              value: "ai-dark-mode-2",
+            },
+          ]}
+        />
+        <div className="flex flex-col gap-2 items-center w-full">
+          <Label className="flex flex-col gap-1 text-center">
+            Select a range of dates for promotion
+            <small className="text-muted-foreground">
+              Minimum duration is 3 days
+            </small>
+          </Label>
+          <Calendar
+            mode="range"
+            selected={promotionPeriod}
+            onSelect={setPromotionPeriod}
+            min={3}
+            disabled={{ before: new Date() }}
+          />
+        </div>
+        <Button disabled={totalDays === 0}>
+          Go to checkout(${totalDays * 20})
+        </Button>
+      </Form>
     </div>
   );
-} 
+}
