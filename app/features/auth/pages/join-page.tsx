@@ -2,6 +2,7 @@ import { Form, Link } from "react-router";
 import { Route } from "./+types/join-page";
 import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
+import AuthButtons from "../components/auth-buttons";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -59,6 +60,7 @@ export default function JoinPage() {
             Create account
           </Button>
         </Form>
+        <AuthButtons />
       </div>
     </div>
   );

@@ -2,11 +2,12 @@ import { Form, Link } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
 import { Route } from "./+types/login-page";
+import AuthButtons from "../components/auth-buttons";
 
 export const meta: Route.MetaFunction = () => {
   return [
     { title: "Login | suemake" },
-    { name: "description", content: "Login to your account" },
+    { name: "description", content: "Log in to your account" },
   ];
 };
 
@@ -41,6 +42,7 @@ export default function LoginPage() {
             Login
           </Button>
         </Form>
+        <AuthButtons />
       </div>
     </div>
   );
