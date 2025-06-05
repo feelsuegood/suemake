@@ -15,7 +15,7 @@ interface ProductCardProps {
   description: string;
   commentCount: number;
   viewCount: number;
-  upvoteCount: number;
+  votesCount: number;
 }
 
 export function ProductCard({
@@ -24,7 +24,7 @@ export function ProductCard({
   description,
   commentCount,
   viewCount,
-  upvoteCount,
+  votesCount,
 }: ProductCardProps) {
   return (
     //! don't forget to change Link to block
@@ -51,7 +51,7 @@ export function ProductCard({
         <CardFooter className="py-0">
           <Button variant="outline" className="flex flex-col h-14">
             <ChevronUpIcon className="size-4 shrink-0" />
-            <span>{upvoteCount}</span>
+            <span>{votesCount}</span>
           </Button>
         </CardFooter>
       </Card>

@@ -11,8 +11,8 @@ export default function InputPair({
   textArea = false,
   ...rest
 }: {
-  label: string;
-  description: string;
+  label?: string;
+  description?: string;
   textArea?: boolean;
 } & InputHTMLAttributes<HTMLInputElement> &
   TextareaHTMLAttributes<HTMLTextAreaElement>) {
