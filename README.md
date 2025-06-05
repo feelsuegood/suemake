@@ -68,7 +68,7 @@ suemake/
 - **Vite**  
 - **Tailwind CSS**  
 - **Shadcn UI & Radix UI**  
-- **Supabase** (backend)
+- **Supabase** 
 
 ## Code Conventions ✨
 
