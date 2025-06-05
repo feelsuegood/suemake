@@ -2,7 +2,7 @@
 
 ## Project Overview 🧩
 
-suemake is a community-driven platform for sharing ideas and supporting development. Users can collaborate and grow faster through Today’s Products, Latest Discussions, AI-powered idea generation, Featured Jobs, and Find a Team Mate.
+Build a full-stack web application with Remix, Supabase, featuring pages for user authentication, community interaction, product listings, and user management.
 
 ## Key Features 🌟
 
