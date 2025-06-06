@@ -120,7 +120,7 @@ export default function PostPage() {
             </div>
           </div>
           <div className="flex flex-col gap-2 text-sm">
-            <span>🎂 joined 3 months age</span>
+            <span>🎂 joined 3 months ago</span>
             <span>🚀 launched 10 products</span>
           </div>
           <Button variant="outline" className="w-full">
