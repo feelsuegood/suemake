@@ -85,7 +85,7 @@ export default function CommunityPage() {
               </Form>
             </div>
             <Button asChild>
-              <Link to="/community/new">
+              <Link to="/community/submit">
                 <PlusIcon className="size-4" />
                 <span className="text-sm">Create Discussion</span>
               </Link>
