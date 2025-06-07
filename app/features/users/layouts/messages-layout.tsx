@@ -11,7 +11,8 @@ import { MessageCard } from "../components/message-card";
 export default function MessagesLayout() {
   return (
     //* prevent scrolling by using tailwind CSS
-    <SidebarProvider className="max-h-[calc(100vh-14rem)] overflow-hidden h-full min-h-full">
+    //* important to set both "max-h-[calc(100vh-14rem)] h-[calc(100vh-14rem)]" for messages-page to take whole space of the page
+    <SidebarProvider className="flex max-h-[calc(100vh-14rem)] h-[calc(100vh-14rem)] overflow-hidden min-h-full">
       <Sidebar className="pt-16" variant="floating">
         <SidebarContent>
           <SidebarGroup>
