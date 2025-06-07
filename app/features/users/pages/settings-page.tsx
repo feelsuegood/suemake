@@ -50,6 +50,16 @@ export default function SettingsPage() {
               ]}
             />
             <InputPair
+              label="Headline"
+              description="An introduction to your profile."
+              name="headline"
+              id="headline"
+              type="text"
+              required
+              placeholder="I'm a product designer who loves to design products and code. I'm also keen to learn new things and share my knowledge with others."
+              textArea
+            />
+            <InputPair
               label="Bio"
               description="Your public bio. It will be displayed on your profile page."
               name="bio"

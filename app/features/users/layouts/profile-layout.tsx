@@ -19,7 +19,7 @@ import { cn } from "~/lib/utils";
 
 export default function UserLayout() {
   return (
-    <div className="space-y-20">
+    <div className="space-y-10">
       {/* header */}
       <div className="flex items-center gap-4 ">
         <Avatar className="size-40">
@@ -67,8 +67,8 @@ export default function UserLayout() {
           </div>
         </div>
       </div>
-      {/* tabs */}
-      <div className="flex gap-10">
+      {/* navlink */}
+      <div className="flex gap-5">
         {[
           { label: "About", to: "/users/username" },
           { label: "Products", to: "/users/username/products" },
@@ -91,7 +91,9 @@ export default function UserLayout() {
         ))}
       </div>
       {/* child page */}
-      <Outlet />
+      <div className="max-w-screen-md">
+        <Outlet />
+      </div>
     </div>
   );
 }
