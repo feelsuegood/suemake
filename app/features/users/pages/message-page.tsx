@@ -12,13 +12,13 @@ export function meta({}: Route.MetaFunction) {
   return [];
 }
 
-export default function ProfilePage({
+export default function MessagePage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
   return (
     <div>
-      <h1>User Profile</h1>
+      <h1>Message Detail</h1>
     </div>
   );
 }

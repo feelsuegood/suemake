@@ -1,14 +1,7 @@
 import { Form, Link, MetaFunction } from "react-router";
-import { Route } from "./+types/submit-page";
+import { Route } from "./+types/submit-product-page";
 import { Hero } from "~/common/components/hero";
 import InputPair from "~/common/components/input-pair";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/common/components/ui/select";
 import SelectPair from "~/common/components/select-pair";
 import { useState } from "react";
 import { Input } from "~/common/components/ui/input";
