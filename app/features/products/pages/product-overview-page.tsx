@@ -1,7 +1,4 @@
-import { ChevronUp, ChevronUpIcon, StarIcon } from "lucide-react";
 import { Route } from "./+types/product-overview-page";
-import { Button } from "~/common/components/ui/button";
-import { Link } from "react-router";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -10,9 +7,7 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function ProductOverviewPage({ params }: Route.ComponentProps) {
-  const { productId } = params;
-
+export default function ProductOverviewPage() {
   return (
     <div className="space-y-10">
       <div className="space-y-1">

@@ -1,24 +1,13 @@
-import type { Route } from "../+types";
+import type { Route } from "./+types/profile-page";
 
-export function loader({ request }: Route.LoaderArgs) {
-  return {};
-}
+export const meta: Route.MetaFunction = () => {
+  return [{ title: "Profile | suemake" }];
+};
 
-export function action({ request }: Route.ActionArgs) {
-  return {};
-}
-
-export function meta({}: Route.MetaFunction) {
-  return [];
-}
-
-export default function ProfilePage({
-  loaderData,
-  actionData,
-}: Route.ComponentProps) {
+export default function ProfilePage() {
   return (
     <div>
-      <h1>User Profile</h1>
+      <h1 className="text-4xl font-bold">Profile</h1>
     </div>
   );
 }
