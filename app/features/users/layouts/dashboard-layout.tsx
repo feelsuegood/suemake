@@ -1,10 +1,4 @@
-import {
-  HomeIcon,
-  LightbulbIcon,
-  PackageIcon,
-  RocketIcon,
-  SparklesIcon,
-} from "lucide-react";
+import { HomeIcon, PackageIcon, RocketIcon, SparklesIcon } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router";
 import {
   Sidebar,
@@ -66,7 +60,7 @@ export default function DashboardLayout() {
         </SidebarContent>
       </Sidebar>
       {/* <div className="h-full overflow-y-scroll"> */}
-      <div className="h-full">
+      <div className="w-full h-full">
         <Outlet />
       </div>
     </SidebarProvider>
