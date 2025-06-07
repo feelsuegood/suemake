@@ -1,24 +1,17 @@
-import type { Route } from "../+types";
+import { MessageCircleIcon } from "lucide-react";
+import { Route } from "./+types/messages-page";
 
-export function loader({ request }: Route.LoaderArgs) {
-  return {};
-}
+export const meta: Route.MetaFunction = () => {
+  return [{ title: "Messages | suemake" }];
+};
 
-export function action({ request }: Route.ActionArgs) {
-  return {};
-}
-
-export function meta({}: Route.MetaFunction) {
-  return [];
-}
-
-export default function MessagesPage({
-  loaderData,
-  actionData,
-}: Route.ComponentProps) {
+export default function MessagesPage() {
   return (
-    <div>
-      <h1>Messages</h1>
+    <div className="h-full w-full flex flex-col items-center justify-center gap-4">
+      <MessageCircleIcon className="size-12 text-muted-foreground" />
+      <h1 className="text-xl text-muted-foreground font-semibold">
+        Click on a message in the sidebar to view it
+      </h1>
     </div>
   );
 }

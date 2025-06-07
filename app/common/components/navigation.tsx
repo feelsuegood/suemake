@@ -227,15 +227,17 @@ export const Navigation = ({
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar>
-                <AvatarImage src="https://github.com/feelsuegood.png" />
+              <Avatar className="cursor-pointer">
+                <AvatarImage src="https://images.unsplash.com/photo-1740252117027-4275d3f84385" />
                 <AvatarFallback>S</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuLabel className="flex flex-col">
                 <span className="font-medium">Sukuna</span>
-                <span className="text-xs text-muted-foreground">@username</span>
+                <span className="text-xs text-muted-foreground">
+                  @sukunamakuna
+                </span>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>

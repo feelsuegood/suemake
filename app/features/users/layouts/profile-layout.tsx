@@ -23,7 +23,7 @@ export default function UserLayout() {
       {/* header */}
       <div className="flex items-center gap-4 ">
         <Avatar className="size-40">
-          <AvatarImage src="https://images.unsplash.com/photo-1740252117027-4275d3f84385?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXZhdGFyJTIwY2hhcmFjdGVyfGVufDB8fDB8fHww" />
+          <AvatarImage src="https://images.unsplash.com/photo-1740252117027-4275d3f84385" />
           <AvatarFallback>S</AvatarFallback>
         </Avatar>
         <div className="space-y-5">
