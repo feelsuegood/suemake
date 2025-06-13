@@ -155,13 +155,13 @@ export const Navigation = ({
   return (
     <nav className="flex px-4 lg:px-20 h-16 items-center justify-between backdrop-blur fixed top-0 left-0 right-0 z-50 bg-background/50">
       {/* menu for desktop */}
-      <div className="hidden md:flex items-center">
+      <div className="hidden lg:flex items-center">
         <Link to="/" className="font-bold tracking-tighter text-lg">
           suemake
         </Link>
         <Separator orientation="vertical" className="h-6 mx-4" />
         <NavigationMenu>
-          <NavigationMenuList className="flex flex-col">
+          <NavigationMenuList>
             {menus.map((menu) => (
               <NavigationMenuItem key={menu.name}>
                 {menu.items ? (
@@ -211,7 +211,7 @@ export const Navigation = ({
         </NavigationMenu>
       </div>
       {/* menu for mobile */}
-      <div className="md:hidden flex items-center">
+      <div className="flex items-center lg:hidden">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon">
