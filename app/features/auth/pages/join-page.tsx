@@ -14,7 +14,10 @@ export const meta: Route.MetaFunction = () => {
 export default function JoinPage() {
   return (
     <div className="flex flex-col relative items-center justify-center h-full">
-      <Button variant="ghost" className="absolute top-8 right-8" asChild>
+      <Button variant="ghost" className="absolute top-8 left-8" asChild>
+        <Link to="/">Home</Link>
+      </Button>
+      <Button variant="link" className="absolute top-8 right-8" asChild>
         <Link to="/auth/login">Login</Link>
       </Button>
       <div className="flex flex-col items-center justify-between w-full max-w-md gap-10">

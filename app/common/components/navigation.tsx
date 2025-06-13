@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Separator } from "~/components/ui/separator";
+import { Separator } from "./ui/separator";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -21,6 +21,7 @@ import {
   DropdownMenuGroup,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import {
   BarChart3Icon,
   BellIcon,
@@ -28,6 +29,7 @@ import {
   MessageCircleIcon,
   SettingsIcon,
   UserIcon,
+  MenuIcon,
 } from "lucide-react";
 
 const menus = [
@@ -151,14 +153,15 @@ export const Navigation = ({
   hasMessage: boolean;
 }) => {
   return (
-    <nav className="flex px-20 h-16 items-center justify-between backdrop-blur fixed top-0 left-0 right-0 z-50 bg-background/50">
-      <div className="flex items-center">
+    <nav className="flex px-4 lg:px-20 h-16 items-center justify-between backdrop-blur fixed top-0 left-0 right-0 z-50 bg-background/50">
+      {/* menu for desktop */}
+      <div className="hidden md:flex items-center">
         <Link to="/" className="font-bold tracking-tighter text-lg">
           suemake
         </Link>
         <Separator orientation="vertical" className="h-6 mx-4" />
         <NavigationMenu>
-          <NavigationMenuList>
+          <NavigationMenuList className="flex flex-col">
             {menus.map((menu) => (
               <NavigationMenuItem key={menu.name}>
                 {menu.items ? (
@@ -207,6 +210,45 @@ export const Navigation = ({
           </NavigationMenuList>
         </NavigationMenu>
       </div>
+      {/* menu for mobile */}
+      <div className="md:hidden flex items-center">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <MenuIcon className="size-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+            <div className="flex flex-col gap-4 mt-4">
+              {menus.map((menu) => (
+                <div key={menu.name}>
+                  <Link
+                    to={menu.to}
+                    className="text-lg font-medium hover:text-primary"
+                  >
+                    {menu.name}
+                  </Link>
+                  {menu.items && (
+                    <div className="ml-4 mt-2 flex flex-col gap-2">
+                      {menu.items.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.to}
+                          className="text-sm text-muted-foreground hover:text-primary"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* User Menu Area */}
       {isLoggedIn ? (
         <div className="flex items-center gap-4">
           <Button size="icon" variant="ghost" asChild className="relative">

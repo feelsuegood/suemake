@@ -30,9 +30,9 @@ export const meta: MetaFunction = () => {
 // .react-router/types/app/common/pages/+types/home-page.ts
 export default function HomePage() {
   return (
-    <div className="px-20 space-y-40">
-      <div className="grid grid-cols-3 gap-4">
-        <div>
+    <div className="space-y-10 md:space-y-20 xl:space-y-40">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="px-5 md:px-5 xl:px-0 col-span-1 md:col-span-3 xl:col-span-1">
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Today's Products
           </h2>
@@ -55,8 +55,8 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="px-5 md:px-5 xl:px-0 col-span-1 md:col-span-3 xl:col-span-1">
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Latest Discussions
           </h2>
@@ -79,8 +79,8 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="px-5 md:px-5 xl:px-0 col-span-1 md:col-span-3 xl:col-span-1">
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             IdeasGPT
           </h2>
@@ -103,8 +103,8 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-4 gap-4">
-        <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="px-5 md:px-5 xl:px-0 col-span-1 md:col-span-3 xl:col-span-1">
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Latest Jobs
           </h2>
@@ -130,8 +130,8 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-4 gap-4">
-        <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="px-5 md:px-5 xl:px-0 col-span-1 md:col-span-3 xl:col-span-1">
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Find a team mate
           </h2>
