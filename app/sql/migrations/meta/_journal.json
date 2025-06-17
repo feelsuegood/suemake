@@ -36,6 +36,27 @@
       "when": 1749800687655,
       "tag": "0004_smart_rogue",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1750131653446,
+      "tag": "0005_lush_menace",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1750131755725,
+      "tag": "0006_remarkable_bruce_banner",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1750132739727,
+      "tag": "0007_crazy_cerebro",
+      "breakpoints": true
     }
   ]
 }

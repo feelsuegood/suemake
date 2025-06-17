@@ -13,7 +13,7 @@ import { profiles } from "../users/schema";
 import { sql } from "drizzle-orm";
 
 export const products = pgTable("products", {
-  proudct_id: bigint("product_id", { mode: "number" })
+  product_id: bigint("product_id", { mode: "number" })
     .primaryKey()
     .generatedAlwaysAsIdentity(),
   name: text().notNull(),
@@ -51,7 +51,7 @@ export const product_upvotes = pgTable(
   "product_upvotes",
   {
     product_id: bigint("product_id", { mode: "number" }).references(
-      () => products.proudct_id,
+      () => products.product_id,
       {
         onDelete: "cascade",
       },
@@ -71,7 +71,7 @@ export const reviews = pgTable(
       .primaryKey()
       .generatedAlwaysAsIdentity(),
     product_id: bigint("product_id", { mode: "number" }).references(
-      () => products.proudct_id,
+      () => products.product_id,
       {
         onDelete: "cascade",
       },
