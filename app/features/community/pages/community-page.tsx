@@ -12,12 +12,19 @@ import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import { PERIOD_OPTIONS, SORT_OPTIONS } from "../constants";
 import InputPair from "~/common/components/input-pair";
 import { PostCard } from "../components/post-card";
+import { getTopics } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | suemake" }];
 };
 
-export default function CommunityPage() {
+// this runs on the server -> so completely safe
+export const loader = async () => {
+  const topics = await getTopics();
+  return { topics };
+};
+
+export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const sorting = searchParams.get("sorting") || "newest";
   const period = searchParams.get("period") || "all";
@@ -111,21 +118,14 @@ export default function CommunityPage() {
             Topics
           </span>
           <div className="flex flex-col gap-4 items-start">
-            {[
-              "AI Tools",
-              "Design Tools",
-              "Dev Tools",
-              "Productivity",
-              "Marketing",
-              "Other",
-            ].map((category) => (
-              <Button variant="link" asChild key={category} className="pl-0">
+            {loaderData.topics.map((topic) => (
+              <Button variant="link" asChild key={topic.slug} className="pl-0">
                 <Link
-                  key={category}
-                  to={`/community?topic=${category}`}
+                  key={topic.slug}
+                  to={`/community?topic=${topic.slug}`}
                   className="font-semibold"
                 >
-                  {category}
+                  {topic.name}
                 </Link>
               </Button>
             ))}
