@@ -12,7 +12,7 @@ import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import { PERIOD_OPTIONS, SORT_OPTIONS } from "../constants";
 import InputPair from "~/common/components/input-pair";
 import { PostCard } from "../components/post-card";
-import { getTopics } from "../queries";
+import { getPosts, getTopics } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | suemake" }];
@@ -21,7 +21,8 @@ export const meta: Route.MetaFunction = () => {
 // this runs on the server -> so completely safe
 export const loader = async () => {
   const topics = await getTopics();
-  return { topics };
+  const posts = await getPosts();
+  return { topics, posts };
 };
 
 export default function CommunityPage({ loaderData }: Route.ComponentProps) {
@@ -99,15 +100,16 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
             </Button>
           </div>
           <div className="space-y-5">
-            {Array.from({ length: 10 }).map((_, index) => (
+            {loaderData.posts.map((post) => (
               <PostCard
-                key={`postId-${index}`}
-                id={`postId-${index}`}
-                title="What is the key quality of a good product?"
-                author="Sue"
-                authorAvatarUrl="https://github.com/apple.png"
-                category="Productivity"
-                postedTime="12 hours ago"
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                author={post.author}
+                authorAvatarUrl={post.authorAvatarUrl}
+                category={post.topic}
+                postedTime={post.createdAt}
+                votesCount={post.upvotes}
                 expanded
               />
             ))}
