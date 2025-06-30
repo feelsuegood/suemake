@@ -30,7 +30,7 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-// needed to render a existing page or an error page
+// Needed to render a existing page or an error page
 export function Layout({ children }: { children: React.ReactNode }) {
   //* set the default locale and zone for luxon
   Settings.defaultLocale = "en-AU";
