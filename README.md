@@ -90,7 +90,9 @@ suemake/
 - [React DayPicker](https://daypicker.dev/) *date picker*
 
 ## Notes 📝
-- # configure only a specific branch to build on Vercel
+
+- Configure only a specific branch to build on Vercel
+
 ```bash
 if [ "$VERCEL_GIT_BRANCH" != "branch-name" ]; then exit 0; fi
 ```
