@@ -4,7 +4,7 @@
 // import { asc, count, eq } from "drizzle-orm";
 // import { profiles } from "../users/schema";
 
-import client from "~/supa-client"
+import client from "~/supa-client";
 
 // // use drizzle
 // export const getTopics = async () => {
@@ -50,7 +50,15 @@ import client from "~/supa-client"
 //* use supabase
 
 export const getTopics = async () => {
-  const {data, error}= await client.from("topics").select("name, slug")
-  console.log(data, error)
-  return data
-}
+  const { data, error } = await client.from("topics").select("name, slug");
+  console.log(data, error);
+  return data;
+};
+
+export const getPosts = async () => {
+  await client.from("posts").select(`
+    id, 
+    titile,
+    created_at,
+    `);
+};
