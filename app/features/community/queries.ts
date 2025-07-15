@@ -6,7 +6,7 @@
 
 import client from "~/supa-client";
 
-// // use drizzle
+//* 1. use drizzle
 // export const getTopics = async () => {
 //   const allTopics = await db
 //     .select({
@@ -47,18 +47,47 @@ import client from "~/supa-client";
 //   return allPosts;
 // };
 
-//* use supabase
+//* 2. use supabase
 
 export const getTopics = async () => {
   const { data, error } = await client.from("topics").select("name, slug");
-  console.log(data, error);
+  // console.log(data, error);
+  if (error) {
+    // This will be handled by the error boundary
+    throw new Error(error.message);
+  }
   return data;
 };
 
+// export const getPosts = async () => {
+//   const { data, error } = await client.from("posts").select(`
+//     post_id,
+//     title,
+//     created_at,
+//     topic: topics!inner (name),
+//     author: profiles!posts_profile_id_profiles_profile_id_fk!inner (
+//     name, username, avatar),
+//     upvotes:post_upvotes (
+//     count
+//     )
+//     `);
+//   console.log(error);
+//   if (error) {
+//     // This will be handled by the error boundary
+//     throw new Error(error.message);
+//   }
+//   return data;
+// };
+
+//* 3 Using supabase view
 export const getPosts = async () => {
-  await client.from("posts").select(`
-    id, 
-    titile,
-    created_at,
-    `);
+  const { data, error } = await client
+    .from("community_post_list_view")
+    .select(`*`);
+  console.log(error);
+  if (error) {
+    // This will be handled by the error boundary
+    throw new Error(error.message);
+  }
+  return data;
 };
