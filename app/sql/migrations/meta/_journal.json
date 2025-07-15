@@ -57,6 +57,13 @@
       "when": 1750132739727,
       "tag": "0007_crazy_cerebro",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1752576915035,
+      "tag": "0008_condemned_george_stacy",
+      "breakpoints": true
     }
   ]
 }

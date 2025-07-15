@@ -24,13 +24,14 @@ export const posts = pgTable("posts", {
     .generatedAlwaysAsIdentity(),
   title: text().notNull(),
   content: text().notNull(),
+  upvotes: bigint("upvotes", { mode: "number" }).default(0),
   created_at: timestamp().notNull().defaultNow(),
   updated_at: timestamp().notNull().defaultNow(),
   topic_id: bigint("topic_id", { mode: "number" }).references(
     () => topics.topic_id,
     {
       onDelete: "cascade",
-    },
+    }
   ),
   profile_id: uuid().references(() => profiles.profile_id, {
     onDelete: "cascade",
@@ -44,13 +45,13 @@ export const postUpvotes = pgTable(
       () => posts.post_id,
       {
         onDelete: "cascade",
-      },
+      }
     ),
     profile_id: uuid().references(() => profiles.profile_id, {
       onDelete: "cascade",
     }),
   },
-  (table) => [primaryKey({ columns: [table.post_id, table.profile_id] })],
+  (table) => [primaryKey({ columns: [table.post_id, table.profile_id] })]
 );
 
 export const postReplies = pgTable("post_replies", {
@@ -61,14 +62,14 @@ export const postReplies = pgTable("post_replies", {
     () => posts.post_id,
     {
       onDelete: "cascade",
-    },
+    }
   ),
   parent_id: bigint("parent_id", { mode: "number" }).references(
     //* handle typescript limitation - self reference
     (): AnyPgColumn => postReplies.reply_id,
     {
       onDelete: "cascade",
-    },
+    }
   ),
   profile_id: uuid()
     .references(() => profiles.profile_id, {
