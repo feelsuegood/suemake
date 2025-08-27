@@ -20,6 +20,7 @@ export const meta: Route.MetaFunction = () => {
 
 // this runs on the server -> so completely safe
 export const loader = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const topics = await getTopics();
   const posts = await getPosts();
   return { topics, posts };
