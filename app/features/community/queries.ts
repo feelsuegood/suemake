@@ -50,6 +50,7 @@ import client from "~/supa-client";
 //* 2. use supabase
 
 export const getTopics = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
   const { data, error } = await client.from("topics").select("name, slug");
   // console.log(data, error);
   if (error) {
@@ -81,6 +82,7 @@ export const getTopics = async () => {
 
 //* 3 Using supabase view
 export const getPosts = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
   const { data, error } = await client
     .from("community_post_list_view")
     .select(`*`);
