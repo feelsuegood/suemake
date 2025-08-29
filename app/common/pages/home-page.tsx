@@ -70,7 +70,7 @@ export default function HomePage() {
         {Array.from({ length: 10 }).map((_, index) => (
           <PostCard
             key={`postId-${index}`}
-            id={`postId-${index}`}
+            id={index}
             title="What is the key quality of a good product?"
             author="Sue"
             authorAvatarUrl="https://github.com/apple.png"
