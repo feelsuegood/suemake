@@ -21,6 +21,8 @@ type Database = MergeDeep<
   }
 >;
 
+// When using clientLoader, you need to change the URL and anon key to the real one
+// because clientLoader runs on the browser not from the server
 const client = createClient<Database>(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_ANON_KEY!

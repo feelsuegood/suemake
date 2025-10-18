@@ -20,16 +20,38 @@ export const meta: Route.MetaFunction = () => {
 };
 
 // this runs on the server -> so completely safe
+// export const loader = async () => {
+//   // await new Promise((resolve) => setTimeout(resolve, 1000));
+//   // const topics = await getTopics();
+//   // const posts = await getPosts();
+//   const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
+//   // const topics = getTopics();
+//   // const posts = getPosts();
+//   return { topics, posts };
+// };
+
+// loader(server side) and clientLoader(browser side) are usually used one at a time
+// it is also possible to use both
 export const loader = async () => {
+  const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
+  return {
+    secret: "secret",
+    topics,
+    posts,
+  };
+};
+
+// clientLoader runs on the the browser -> change supa-client.ts's real URL and anon key
+export const clientLoader = async ({
+  serverLoader,
+}: Route.ClientLoaderArgs) => {
+  const serverData = await serverLoader();
   // await new Promise((resolve) => setTimeout(resolve, 1000));
-  // const topics = await getTopics();
-  // const posts = await getPosts();
-  // const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
-  const topics = getTopics();
-  const posts = getPosts();
+  const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
   return { topics, posts };
 };
 
+// Hapy path
 export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const { topics, posts } = loaderData;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -160,3 +182,10 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
+
+// render this while before load clientLoader data, so it will be shown before clientLoader is completed
+export function HydrateFallback() {
+  return <div>Loading...</div>;
+}
+
+// Create error boundary for each page if you need to handle errors differently for each page
