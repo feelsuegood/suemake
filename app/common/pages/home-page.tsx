@@ -5,6 +5,9 @@ import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
+import { getProductsByDateRange } from "~/features/products/queries";
+import { DateTime } from "luxon";
+import { Route } from "./+types/home-page";
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,9 +29,18 @@ export const meta: MetaFunction = () => {
 //   };
 // }
 
+export const loader = async () => {
+  const products = await getProductsByDateRange({
+    startDate: DateTime.now().startOf("day"),
+    endDate: DateTime.now().endOf("day"),
+    limit: 7,
+  });
+  return { products };
+};
+
 // * react-router generated types: Define types by referring to route.ts
 // .react-router/types/app/common/pages/+types/home-page.ts
-export default function HomePage() {
+export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-10 md:space-y-20 xl:space-y-40">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -43,15 +55,15 @@ export default function HomePage() {
             <Link to="/products/leaderboards">Explore all products &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 10 }).map((_, index) => (
+        {loaderData.products.map((product, index) => (
           <ProductCard
-            key={`productId-${index}`}
-            id={`productId-${index}`}
-            name="Product Name"
-            description="Product Description"
-            commentCount={100}
-            viewCount={100}
-            votesCount={100}
+            key={product.product_id}
+            id={product.product_id.toString()}
+            name={product.name}
+            description={product.description}
+            reviewCount={product.reviews}
+            viewCount={product.views}
+            votesCount={product.upvotes}
           />
         ))}
       </div>
