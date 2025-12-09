@@ -10,11 +10,11 @@ import {
 } from "./ui/pagination";
 
 type ProductPaginationProps = {
-  totalPage: number;
+  totalPages: number;
 };
 
 export default function ProductPagination({
-  totalPage,
+  totalPages,
 }: ProductPaginationProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   //   console.log(searchParams);
@@ -70,7 +70,7 @@ export default function ProductPagination({
               {page}
             </PaginationLink>
           </PaginationItem>
-          {page === totalPage ? null : (
+          {page === totalPages ? null : (
             <>
               <PaginationItem>
                 <PaginationLink
@@ -83,7 +83,7 @@ export default function ProductPagination({
                   {page + 1}
                 </PaginationLink>
               </PaginationItem>
-              {page === totalPage - 1 ? null : (
+              {page === totalPages - 1 ? null : (
                 <>
                   <PaginationItem>
                     <PaginationEllipsis />
