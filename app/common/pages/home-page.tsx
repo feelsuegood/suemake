@@ -8,6 +8,7 @@ import { TeamCard } from "~/features/teams/components/team-card";
 import { getProductsByDateRange } from "~/features/products/queries";
 import { DateTime } from "luxon";
 import { Route } from "./+types/home-page";
+import { getPosts } from "~/features/community/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -35,7 +36,11 @@ export const loader = async () => {
     endDate: DateTime.now().endOf("day"),
     limit: 7,
   });
-  return { products };
+  const posts = await getPosts({
+    limit: 7,
+    sorting: "newest",
+  });
+  return { products, posts };
 };
 
 // * react-router generated types: Define types by referring to route.ts
@@ -79,15 +84,16 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/community">Explore all discussions &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 10 }).map((_, index) => (
+        {loaderData.posts.map((post) => (
           <PostCard
-            key={`postId-${index}`}
-            id={index}
-            title="What is the key quality of a good product?"
-            author="Sue"
-            authorAvatarUrl="https://github.com/apple.png"
-            category="Productivity"
-            postedTime="12 hours ago"
+            key={post.post_id}
+            id={post.post_id}
+            title={post.title}
+            author={post.author}
+            authorAvatarUrl={post.author_avatar}
+            category={post.topic}
+            postedTime={post.created_at}
+            votesCount={post.upvotes}
           />
         ))}
       </div>

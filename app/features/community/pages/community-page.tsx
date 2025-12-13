@@ -1,6 +1,6 @@
 import { Hero } from "~/common/components/hero";
 import { Route } from "./+types/community-page";
-import { Await, Form, Link, useSearchParams } from "react-router";
+import { Await, data, Form, Link, useSearchParams } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import {
   DropdownMenu,
@@ -14,6 +14,7 @@ import InputPair from "~/common/components/input-pair";
 import { PostCard } from "../components/post-card";
 import { getPosts, getTopics } from "../queries";
 import { Suspense } from "react";
+import z from "zod";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | suemake" }];
@@ -30,10 +31,43 @@ export const meta: Route.MetaFunction = () => {
 //   return { topics, posts };
 // };
 
+const searchParamsSchema = z.object({
+  sorting: z.enum(["newest", "popular"]).optional().default("newest"),
+  period: z
+    .enum(["all", "today", "week", "month", "year"])
+    .optional()
+    .default("all"),
+  keyword: z.string().optional(),
+  topic: z.string().optional(),
+});
+
 // loader(server side) and clientLoader(browser side) are usually used one at a time
 // it is also possible to use both
-export const loader = async () => {
-  const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const url = new URL(request.url);
+  const { success, data: parsedData } = searchParamsSchema.safeParse(
+    Object.fromEntries(url.searchParams)
+  );
+  if (!success) {
+    throw data(
+      {
+        error_code: "invalid_search_params",
+        message: "Invalid search params",
+      },
+      { status: 400 }
+    );
+  }
+
+  const [topics, posts] = await Promise.all([
+    getTopics(),
+    getPosts({
+      limit: 20,
+      sorting: parsedData.sorting,
+      period: parsedData.period,
+      keyword: parsedData.keyword,
+      topic: parsedData.topic,
+    }),
+  ]);
   return {
     secret: "secret",
     topics,
@@ -42,14 +76,14 @@ export const loader = async () => {
 };
 
 // clientLoader runs on the the browser -> change supa-client.ts's real URL and anon key
-export const clientLoader = async ({
-  serverLoader,
-}: Route.ClientLoaderArgs) => {
-  const serverData = await serverLoader();
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
-  const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
-  return { topics, posts };
-};
+// export const clientLoader = async ({
+//   serverLoader,
+// }: Route.ClientLoaderArgs) => {
+//   const serverData = await serverLoader();
+//   // await new Promise((resolve) => setTimeout(resolve, 1000));
+//   const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
+//   return { topics, posts };
+// };
 
 // Hapy path
 export default function CommunityPage({ loaderData }: Route.ComponentProps) {
@@ -115,7 +149,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
               <Form className="w-2/3">
                 <InputPair
                   type="text"
-                  name="search"
+                  name="keyword"
                   placeholder="Search for a topic"
                 />
               </Form>
