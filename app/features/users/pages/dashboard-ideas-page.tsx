@@ -16,7 +16,7 @@ export default function DashboardIdeasPage() {
             id={`ideaId-${index}`}
             title="A startup that creates a AI-powered generated mental health app, delivering personalized therapy sessions to users and practical tools to practice mindfulness and log their progress with graphical reports and peaceful vibe that gives users a sense of calmness and relaxation which can be helpful for users to reduce stress and anxiety."
             viewCount={99}
-            postedTime="12 hours ago"
+            postedAt="12 hours ago"
             likeCount={16}
           />
         ))}

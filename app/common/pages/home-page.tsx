@@ -9,6 +9,7 @@ import { getProductsByDateRange } from "~/features/products/queries";
 import { DateTime } from "luxon";
 import { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
+import { getGptIdeas } from "~/features/ideas/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -40,7 +41,10 @@ export const loader = async () => {
     limit: 7,
     sorting: "newest",
   });
-  return { products, posts };
+  const ideas = await getGptIdeas({
+    limit: 7,
+  });
+  return { products, posts, ideas };
 };
 
 // * react-router generated types: Define types by referring to route.ts
@@ -109,15 +113,15 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/ideas">Explore all ideas &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 5 }).map((_, index) => (
+        {loaderData.ideas.map((idea) => (
           <IdeaCard
-            key={`ideaId-${index}`}
-            id={`ideaId-${index}`}
-            title="A startup that creates a AI-powered generated mental health app, delivering personalized therapy sessions to users and practical tools to practice mindfulness and log their progress with graphical reports and peaceful vibe that gives users a sense of calmness and relaxation which can be helpful for users to reduce stress and anxiety."
-            viewCount={99}
-            postedTime="12 hours ago"
-            likeCount={16}
-            claimed={index % 2 === 0}
+            key={idea.gpt_idea_id}
+            id={idea.gpt_idea_id}
+            title={idea.idea}
+            viewCount={idea.views}
+            postedAt={idea.created_at}
+            likeCount={idea.likes}
+            claimed={idea.is_claimed}
           />
         ))}
       </div>

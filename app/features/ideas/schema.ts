@@ -15,7 +15,7 @@ export const gptIdeas = pgTable("gpt_ideas", {
     .generatedAlwaysAsIdentity(),
   idea: text().notNull(),
   views: integer().notNull().default(0),
-  claimed: timestamp(),
+  claimed_at: timestamp(),
   claimed_by: uuid().references(() => profiles.profile_id, {
     onDelete: "set null",
   }),
@@ -29,12 +29,12 @@ export const gptIdeasLikes = pgTable(
       () => gptIdeas.gpt_idea_id,
       {
         onDelete: "cascade",
-      },
+      }
     ),
     profile_id: uuid().references(() => profiles.profile_id, {
       onDelete: "cascade",
     }),
     created_at: timestamp().notNull().defaultNow(),
   },
-  (table) => [primaryKey({ columns: [table.gpt_idea_id, table.profile_id] })],
+  (table) => [primaryKey({ columns: [table.gpt_idea_id, table.profile_id] })]
 );

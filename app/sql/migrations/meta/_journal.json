@@ -71,6 +71,13 @@
       "when": 1765162707091,
       "tag": "0009_wakeful_cardiac",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1768204525757,
+      "tag": "0010_slow_master_chief",
+      "breakpoints": true
     }
   ]
 }

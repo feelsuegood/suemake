@@ -1,0 +1,1 @@
+ALTER TABLE "gpt_ideas" RENAME COLUMN "claimed" TO "claimed_at";
