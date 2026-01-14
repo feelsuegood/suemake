@@ -1,19 +1,24 @@
 import { bigint, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { JOB_TYPES, LOCATION_TYPES, SALARY_RANGES } from "./constans";
+import { Database } from "database.types";
+
+export type LocationType = Database["public"]["Enums"]["location"];
+export type JobType = Database["public"]["Enums"]["job_type"];
+export type SalaryRange = Database["public"]["Enums"]["salary_range"];
 
 export const jobType = pgEnum(
   "job_type",
-  JOB_TYPES.map((type) => type.value) as [string, ...string[]],
+  JOB_TYPES.map((type) => type.value) as [string, ...string[]]
 );
 
 export const locations = pgEnum(
   "location",
-  LOCATION_TYPES.map((type) => type.value) as [string, ...string[]],
+  LOCATION_TYPES.map((type) => type.value) as [string, ...string[]]
 );
 
 export const salaryRange = pgEnum(
   "salary_range",
-  SALARY_RANGES as [string, ...string[]],
+  SALARY_RANGES as [string, ...string[]]
 );
 
 export const jobs = pgTable("jobs", {

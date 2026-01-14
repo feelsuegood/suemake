@@ -1,4 +1,5 @@
 import client from "~/supa-client";
+import { LocationType, JobType, SalaryRange } from "./schema";
 
 export const getJobs = async ({
   limit,
@@ -7,9 +8,9 @@ export const getJobs = async ({
   salary,
 }: {
   limit: number;
-  location?: string;
-  type?: string;
-  salary?: string;
+  location?: LocationType;
+  type?: JobType;
+  salary?: SalaryRange;
 }) => {
   const baseQuery = client
     .from("jobs")
@@ -28,7 +29,6 @@ export const getJobs = async ({
   `
     )
     .limit(limit);
-
   if (location) {
     baseQuery.eq("location", location);
   }

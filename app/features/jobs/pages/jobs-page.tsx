@@ -7,6 +7,7 @@ import { data, useSearchParams } from "react-router";
 import { cn } from "~/lib/utils";
 import { getJobs } from "../queries";
 import z from "zod";
+import { LocationType, JobType, SalaryRange } from "../schema";
 
 // TODO: code challenge
 // Use url to check type is selected or not, create a button to clear the filter
@@ -45,9 +46,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   }
   const jobs = await getJobs({
     limit: 40,
-    location: parsedData.location,
-    type: parsedData.type,
-    salary: parsedData.salary,
+    location: parsedData.location as LocationType,
+    type: parsedData.type as JobType,
+    salary: parsedData.salary as SalaryRange,
   });
   return { jobs };
 };
