@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { Link } from "react-router";
 import { Badge } from "~/common/components/ui/badge";
 import { Button } from "~/common/components/ui/button";
@@ -10,12 +11,12 @@ import {
 } from "~/common/components/ui/card";
 
 interface JobCardProps {
-  id: string;
+  id: number;
   company: string;
   companyLogoUrl: string;
   companyHq: string;
   title: string;
-  postedTime: string;
+  postedAt: string;
   type: string;
   positionLocation: string;
   salary: string;
@@ -27,7 +28,7 @@ export function JobCard({
   companyLogoUrl,
   companyHq,
   title,
-  postedTime,
+  postedAt,
   type,
   positionLocation,
   salary,
@@ -46,28 +47,34 @@ export function JobCard({
               <span className="text-accent-foreground">{company}</span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">
-                {postedTime}
+                {DateTime.fromISO(postedAt).toRelative()}
               </span>
             </div>
           </div>
           <CardTitle>{title}</CardTitle>
         </CardHeader>
         <CardContent>
-          <Badge variant="outline">{type}</Badge>
-          <Badge variant="outline">{positionLocation}</Badge>
+          <Badge variant="outline" className="capitalize">
+            {type}
+          </Badge>
+          <Badge variant="outline" className="capitalize">
+            {positionLocation}
+          </Badge>
         </CardContent>
         <CardFooter className="flex justify-between">
           <div className="flex flex-col">
             <span className="text-sm font-medium text-muted-foreground">
               {salary}
             </span>
-              <span className="text-sm font-medium text-muted-foreground">
-                {companyHq}
-              </span>
+            <span className="text-sm font-medium text-muted-foreground">
+              {companyHq}
+            </span>
           </div>
-          <Button variant="secondary" size="sm">Apply now</Button>
+          <Button variant="secondary" size="sm">
+            Apply now
+          </Button>
         </CardFooter>
       </Card>
     </Link>
   );
-} 
+}

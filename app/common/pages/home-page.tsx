@@ -10,6 +10,7 @@ import { DateTime } from "luxon";
 import { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
 import { getGptIdeas } from "~/features/ideas/queries";
+import { getJobs } from "~/features/jobs/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -44,7 +45,10 @@ export const loader = async () => {
   const ideas = await getGptIdeas({
     limit: 7,
   });
-  return { products, posts, ideas };
+  const jobs = await getJobs({
+    limit: 11,
+  });
+  return { products, posts, ideas, jobs };
 };
 
 // * react-router generated types: Define types by referring to route.ts
@@ -137,18 +141,18 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/jobs">Explore all jobs &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.jobs.map((job) => (
           <JobCard
-            key={`jobId-${index}`}
-            id={`jobId-${index}`}
-            company="Atlassian"
-            companyLogoUrl="https://github.com/atlassian.png"
-            companyHq="San Francisco, CA"
-            title="Software Developer"
-            postedTime="12 hours ago"
-            type="Full-time"
-            positionLocation="Remote"
-            salary="$10,000 - $12,000"
+            key={job.job_id}
+            id={job.job_id}
+            company={job.company_name}
+            companyLogoUrl={job.company_logo}
+            companyHq={job.company_location}
+            title={job.position}
+            postedAt={job.created_at}
+            type={job.job_type}
+            positionLocation={job.location}
+            salary={job.salary_range}
           />
         ))}
       </div>
