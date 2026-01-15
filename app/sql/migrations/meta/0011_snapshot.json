@@ -1,6 +1,6 @@
 {
-  "id": "41b931ff-ba18-4257-9fbf-5963695c9bd9",
-  "prevId": "19283125-4545-40d2-980f-80de1b6a43b5",
+  "id": "ea41673f-d5c1-490b-b328-688f53d62369",
+  "prevId": "41b931ff-ba18-4257-9fbf-5963695c9bd9",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -945,7 +945,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "team_team_id_seq",
+            "name": "teams_team_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -992,6 +992,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "team_leader_id": {
+          "name": "team_leader_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -1008,7 +1014,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "teams_team_leader_id_profiles_profile_id_fk": {
+          "name": "teams_team_leader_id_profiles_profile_id_fk",
+          "tableFrom": "teams",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "team_leader_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},

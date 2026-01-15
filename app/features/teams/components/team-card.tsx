@@ -7,12 +7,16 @@ import {
   CardTitle,
   CardFooter,
 } from "~/common/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "~/common/components/ui/avatar";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "~/common/components/ui/avatar";
 
 interface TeamCardProps {
-  id: string;
+  id: number;
   leaderUsername: string;
-  leaderAvatarUrl: string;
+  leaderAvatarUrl: string | null;
   positions: string[];
   projectDescription: string;
 }
@@ -25,18 +29,18 @@ export function TeamCard({
   projectDescription,
 }: TeamCardProps) {
   return (
-    <Link to={`/teams/${id}`}>
-      <Card className="bg-transparent hover:bg-card/50 transition-colors">
+    <Link to={`/teams/${id}`} className="block">
+      <Card className="bg-transparent hover:bg-card/50 flex flex-col justify-between transition-colors h-full">
         <CardHeader className="flex flex-row items-center">
           <CardTitle className="text-base space-y-2 space-x-1">
             <Badge
               variant="secondary"
               className="inline-flex shadow-sm items-center text-base"
             >
-              <span className='text-base'>@{leaderUsername}</span>
+              <span className="text-base">@{leaderUsername}</span>
               <Avatar className="size-5">
                 <AvatarFallback>{leaderUsername.charAt(0)}</AvatarFallback>
-                <AvatarImage src={leaderAvatarUrl} />
+                {leaderAvatarUrl ? <AvatarImage src={leaderAvatarUrl} /> : null}
               </Avatar>
             </Badge>
             <span className="text-base"> is looking for</span>
@@ -46,7 +50,9 @@ export function TeamCard({
               </Badge>
             ))}
             <span className="text-base leading-loose"> to build</span>
-            <span className="text-base leading-loose">{projectDescription}</span>
+            <span className="text-base leading-loose">
+              {projectDescription}
+            </span>
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex justify-end">
@@ -55,4 +61,4 @@ export function TeamCard({
       </Card>
     </Link>
   );
-} 
+}
