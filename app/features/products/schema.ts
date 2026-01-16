@@ -43,6 +43,7 @@ export const categories = pgTable("categories", {
     .primaryKey()
     .generatedAlwaysAsIdentity(),
   name: text().notNull(),
+  description: text().notNull(),
   created_at: timestamp().notNull().defaultNow(),
   updated_at: timestamp().notNull().defaultNow(),
 });

@@ -34,6 +34,7 @@ export const meta: MetaFunction = () => {
 // }
 
 export const loader = async () => {
+  // TODO: use promise.all to get products, posts, ideas, jobs, and teams
   const products = await getProductsByDateRange({
     startDate: DateTime.now().startOf("day"),
     endDate: DateTime.now().endOf("day"),
@@ -75,7 +76,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         {loaderData.products.map((product, index) => (
           <ProductCard
             key={product.product_id}
-            id={product.product_id.toString()}
+            id={product.product_id}
             name={product.name}
             description={product.description}
             reviewCount={product.reviews}
