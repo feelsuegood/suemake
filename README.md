@@ -97,15 +97,19 @@ suemake/
 if [ "$VERCEL_GIT_BRANCH" != "branch-name" ]; then exit 0; fi
 ```
 
-- Generate database types
-```bash
-npm run db:typegen
-```
-
+- Generate database migrations schema
+  ```bash
+  npm run db:generate
+  ```
 - Generate database migrations
-```bash
-npm run db:migrate
-```
-
-- Generate database studio
-```bash
+  ```bash
+  npm run db:migrate
+  ```
+- Generate database types
+  ```bash
+  npm run db:typegen
+  ```
+- Check type safety
+  ```bash
+  npm run typecheck
+  ```
