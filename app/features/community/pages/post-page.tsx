@@ -17,7 +17,7 @@ import {
 } from "~/common/components/ui/avatar";
 import { Badge } from "~/common/components/ui/badge";
 import { Reply } from "../components/reply";
-import { getPostById } from "../queries";
+import { getPostById, getReplies } from "../queries";
 import { DateTime } from "luxon";
 
 export const meta: Route.MetaFunction = () => {
@@ -26,7 +26,8 @@ export const meta: Route.MetaFunction = () => {
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const post = await getPostById(Number(params.postId));
-  return { post };
+  const replies = await getReplies(Number(params.postId));
+  return { post, replies };
 }
 
 export default function PostPage({ loaderData }: Route.ComponentProps) {
@@ -62,7 +63,7 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
               <ChevronUpIcon className="size-4 shrink-0" />
               <span>{loaderData.post.upvotes}</span>
             </Button>
-            <div className="space-y-20">
+            <div className="space-y-20 w-full">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold">
                   {loaderData.post.title}
@@ -80,8 +81,8 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
               </div>
               <Form className="flex items-start gap-5 w-3/4">
                 <Avatar className="size-14">
-                  <AvatarImage src="https://github.com/feelsuegood.png" />
-                  <AvatarFallback>F</AvatarFallback>
+                  <AvatarImage src={loaderData.post.author_avatar} />
+                  <AvatarFallback>{loaderData.post.author[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col gap-5 items-end w-full">
                   <Textarea
@@ -95,14 +96,16 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
               <div className="space-y-10">
                 <h4 className="font-semibold">{loaderData.post.replies === 1 ? `${loaderData.post.replies} Reply` : `${loaderData.post.replies} Replies`}</h4>
                 <div className="flex flex-col gap-5">
-                  <Reply
-                    avatarUrl="https://github.com/feelsuegood.png"
-                    avatarFallback="F"
-                    username="Sukuna"
-                    timestamp="12 hours ago"
-                    content="I think the key quality of a good product is that it is easy to create something like it. The product should be easy to use and understand. The product should be easy to maintain and update. The product should be easy to scale. The product should be easy to integrate with other products. The product should be easy to customize. The product should be easy to extend. The product should be easy to integrate with other products. The product should"
-                    topLevel
-                  />
+                  {loaderData.replies.map((reply) => (
+                    <Reply
+                      avatarUrl={reply.user.avatar}
+                      username={reply.user.username}
+                      timestamp={reply.created_at}
+                      content={reply.reply}
+                      topLevel={true}
+                      replies={reply.post_replies}
+                    />
+                  ))}
                 </div>
               </div>
             </div>

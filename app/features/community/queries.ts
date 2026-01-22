@@ -134,9 +134,38 @@ export const getPosts = async ({
 };
 
 export const getPostById = async (postId: number) => {
-  const { data, error } = await client.from("community_post_detail").select("*").eq("post_id", postId).single();
+  const { data, error } = await client
+    .from("community_post_detail")
+    .select("*")
+    .eq("post_id", postId)
+    .single();
   if (error) {
     throw error;
   }
+  return data;
+};
+
+export const getReplies = async (postId: number) => {
+  const replyQuery = `
+  reply_id,
+      reply,
+      created_at,
+      user: profiles (
+      name, avatar, username)
+  `;
+  const { data, error } = await client
+    .from("post_replies")
+    .select(
+      `
+      ${replyQuery},
+      post_replies (
+      ${replyQuery})
+      `,
+    )
+    .eq("post_id", postId);
+  if (error) {
+    throw error;
+  }
+  // console.log(JSON.stringify(data, null, 2));
   return data;
 };
